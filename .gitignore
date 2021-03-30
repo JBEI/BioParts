@@ -8,7 +8,7 @@
 /bazel-out
 
 # dependencies
-/node_modules
+/src/main/ngapp/node_modules/
 
 # profiling files
 chrome-profiler-events*.json
@@ -45,4 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 /bps.iml
-/src/main/ngapp/node_modules/
+/target/
