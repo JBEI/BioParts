@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <app-sequence [sequence]="sequence"></app-sequence>
+        </div>
+
+        <div class="col-4">
+            <div class="p-4 text-muted font-italic border mt-3">
+                No matching annotations found
+            </div>
+
+            <table class="table-sm table-bordered w-100" *ngIf="features && features.length">
+                <thead>
+                <tr>
+                    <td></td>
+                    <td>Type</td>
+                    <td>Name</td>
+                    <td>Strand</td>
+                    <td>Location</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let feature of features">
+                    <td class="cursor_pointer" (click)="selectFeature(feature)">
+                        <i class="fa fa-fw" [ngClass]="{'fa-square-o': !isSelected(feature),
+                    'fa-check-square-o': isSelected(feature)}"></i>
+                    </td>
+                    <td>{{ feature.type }}</td>
+                    <td>{{ feature.name }}</td>
+                    <td>{{ feature.strand }}</td>
+                    <td>{{ feature.locations[0].genbankStart }} ... {{ feature.locations[0].end }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

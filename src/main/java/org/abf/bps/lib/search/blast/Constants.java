@@ -4,7 +4,7 @@ package org.abf.bps.lib.search.blast;
 public class Constants {
 
     // location of data directory
-    public static final String DATA_DIR = "/Users/haplahar/data/index5";
+    public static final String DATA_DIR = "/Users/haplahar/data/index3";
 
     public static final String TMP_DIR = "/tmp";
 

@@ -3,7 +3,6 @@ package org.abf.bps.lib.dto.search;
 import org.abf.bps.lib.dto.IDataTransferModel;
 import org.abf.bps.lib.shared.ColumnField;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class SearchResults implements IDataTransferModel {
                 comparator = new AlignmentComparator();
         }
 
-        Collections.sort(results, comparator);
+        results.sort(comparator);
     }
 
     /**

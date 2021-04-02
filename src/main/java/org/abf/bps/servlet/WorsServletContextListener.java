@@ -1,6 +1,5 @@
 package org.abf.bps.servlet;
 
-
 import org.abf.bps.lib.executor.IceExecutorService;
 import org.abf.bps.lib.search.blast.RebuildIndexes;
 
@@ -14,8 +13,6 @@ public class WorsServletContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        RebuildIndexes task = new RebuildIndexes();
-        IceExecutorService.getInstance().runTask(task);
     }
 
     @Override

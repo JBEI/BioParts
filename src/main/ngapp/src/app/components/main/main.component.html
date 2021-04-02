@@ -1,0 +1,57 @@
+<div style="text-align: center; margin-top: 12%">
+    <h2>Biological Parts Search</h2>
+    <br><br>
+
+    <div style="width: 45%; margin: 0 auto;">
+
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs m-0">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink>KEYWORD SEARCH</a>
+                <ng-template ngbNavContent>
+                    <form (submit)="runSearch()">
+                        <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd" name="keyword"
+                               [(ngModel)]="query.queryString" placeholder="Enter search term(s)"/>
+                    </form>
+
+                </ng-template>
+            </li>
+
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>BLAST<sup>&reg;</sup></a>
+                <ng-template ngbNavContent>
+                    <div>
+                        <textarea rows="10" name="dna-sequence" [(ngModel)]="query.blastQuery.sequence"
+                                  placeholder="Enter DNA sequence"></textarea>
+                        <br>
+
+                        <select [(ngModel)]="query.blastQuery.blastProgram">
+                            <option value="">Search Type</option>
+                            <option value="BLAST_N">Nucleotide Search (blastn)</option>
+                            <option value="TBLAST_X">Nucleotide Translated Search (tblastx)</option>
+                        </select>
+
+                        <div class="pull-right">
+                            <button class="btn btn-link">Reset</button>
+                            <button class="btn btn-primary" type="submit" (click)="runSearch()">Search</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>AUTO ANNOTATION</a>
+                <ng-template ngbNavContent>
+                    <div>
+                        <textarea rows="10" placeholder="Enter DNA sequence"
+                                  [(ngModel)]="query.blastQuery.sequence"></textarea>
+                        <button class="btn btn-primary" (click)="runAutoAnnotate()">Annotate</button>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+    </div>
+</div>
+
+<div class="small" style="bottom: 0; right: 0; position: absolute">
+    <button class="btn btn-sm btn-link" (click)="showAddRegistryForm()">Add your registry</button>
+</div>

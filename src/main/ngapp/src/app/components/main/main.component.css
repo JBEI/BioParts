@@ -1,0 +1,37 @@
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-bottom: 2px solid darkblue;
+    /*border-color: #dee2e6 #dee2e6 #fff;*/
+}
+
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.nav-link {
+    display: block;
+    padding: 1rem 1.2rem;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom: 2px solid slategray;
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 6px;
+    font-size: 0.95em
+}

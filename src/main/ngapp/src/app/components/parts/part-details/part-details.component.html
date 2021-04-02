@@ -1,0 +1,114 @@
+<div>
+
+    <app-header></app-header>
+
+    <div>
+
+        <div class="col-12 p-0">
+
+            <div class="d-flex border-top p-3" style=" background-color: #f1f5f8">
+
+                <div class="flex-lg-fill">
+
+                    <!-- go back arrow -->
+                    <i (click)="backTo()" class="pull-left fa fa-chevron-circle-left go-back-arrow align-self-center"
+                       title="Back">
+                    </i>
+
+                    <span class="font-12em">
+                        <span class="text-black-50 font-weight-bold">{{partSequence.part.type}}</span>&nbsp;
+                        <strong>{{partSequence.part.name}}</strong>
+                    </span>
+
+                    <span *ngFor="let parent of partSequence.part.parents">
+                        &nbsp;<a [href]="'entry/' + parent.recordId" [ngbTooltip]="parent.name"
+                                 style="font-size: 12px; color: white; position: relative; top: -4px"
+                                 class="badge badge-secondary cursor-pointer p-2">
+                        {{parent.type}} <i class="fa fa-level-up"></i></a>
+                    </span>
+
+                    <br>
+
+                    <small class="font-75em">
+                        {{partSequence.part.creationTime | date:'medium'}}
+                        <span style="color: #ccc; width: 1px"><span class="mr-1 ml-1">|</span></span>
+
+                        {{partSequence.part.ownerEmail || partSequence.part.owner}}
+                    </small>
+                </div>
+
+                <div class="align-self-center text-center flex-nowrap border-left" style="width: 200px">
+                    <button type="button" class="btn btn-link outline-none" (click)="prevEntryInContext()">
+                        <i class="fa fa-arrow-left context_nav_pager"></i>
+                    </button>
+
+                    <strong class="font-90em">3 / 4</strong>
+
+                    <button type="button" class="btn btn-link outline-none" (click)="nextEntryInContext()">
+                        <i class="fa fa-arrow-right context_nav_pager"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>General Information</a>
+                    <ng-template ngbNavContent>
+                        <app-part-general-information [partSequence]="partSequence"></app-part-general-information>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2" class="mr-3 ml-3">
+                    <a ngbNavLink>Sequence Analysis</a>
+                    <ng-template ngbNavContent>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="4" class="mr-3 ml-3">
+                    <a ngbNavLink>Samples</a>
+                    <ng-template ngbNavContent>
+                    </ng-template>
+                </li>
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="flex-lg-fill p-4"></div>
+
+
+            <div class="mt-5 text-center text-uppercase font-weight-bold"
+                 style="position: absolute; top: 120px; right: 0; height: 400px">
+                <ul class="list-group" *ngIf="!details">
+                    <li class="list-group-item right-nav list-group-item-action cursor-pointer p-3"
+                        ngbTooltip="Comments" (click)="showDetails()">
+                        <i class="fa fa-fw fa-comments-o font-12em"></i>
+                    </li>
+                    <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Experiments">
+                        <i class="fa fa-fw fa-database font-12em"></i>
+                    </li>
+                    <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Attachments">
+                        <i class="fa fa-fw fa-file font-12em"></i>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mt-5 border-left p-2 shadow-sm text-nowrap border-top" *ngIf="details"
+                 style="position: absolute; top: 120px; right: 0; height: 400px">
+                <div class="border-bottom">
+                    <span class="cursor-pointer" (click)="details =!details">Back</span> content goes here
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--                                <div class="pad_top pull-right">-->
+    <!--                                    <ice-entry-attachment can-edit="partSequence.part.canEdit" remote="remoteParams"></ice-entry-attachment>-->
+    <!--                                </div>-->
+
+    <!--                                <div class="pad_top pull-right" *ngIf="partSequence.part.canEdit">-->
+    <!--                                    <ice-entry-permission entry='entry'></ice-entry-permission>-->
+    <!--                                </div>-->
+
+    <!--                                <div class="pad_top pull-right" *ngIf="!partSequence.part.remote">-->
+    <!--                                    <ice-entry-folders entry="entry"></ice-entry-folders>-->
+    <!--                                </div>-->
+
+</div>
