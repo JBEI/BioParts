@@ -9,7 +9,8 @@
     <div class="bg-light mt-2 mb-2 p-3">
         <div class="pr-5 pb-2 align-text-top short-input">
             <strong class="text-muted small">Part ID</strong><br>
-            <span>{{this.partSequence.part.partId}}</span>
+            <span *ngIf="!partSequence.partSource">{{this.partSequence.part.partId}}</span>
+            <a *ngIf="partSequence.partSource" target="_blank" [href]="partSequence.partSource.url">{{this.partSequence.part.partId}}</a>
         </div>
 
         <span *ngFor="let partField of shortFields" [ngSwitch]="partField.inputType">
