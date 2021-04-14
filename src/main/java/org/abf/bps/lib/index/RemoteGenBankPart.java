@@ -26,7 +26,7 @@ public class RemoteGenBankPart {
             Stream<String> stream = reader.lines();
             Iterator<String> it = stream.iterator(); // Files.lines(Paths.get("/home/hector/Downloads/AC163214.fasta")).iterator();
             boolean start = false;
-            String g = "";
+            StringBuilder g = new StringBuilder();
 
             while (it.hasNext()) {
                 String line = Jsoup.parse(it.next()).text();
@@ -40,16 +40,13 @@ public class RemoteGenBankPart {
                     start = true;
                 }
 
-                g += (line + "\n");
+                g.append(line).append("\n");
 
                 if (line.startsWith("//"))
                     break;
             }
 
             GenBankParser parser = new GenBankParser();
-            FeaturedDNASequence sequence = parser.parse(g);
-            if (sequence == null)
-                return null;
 
 //            PartData partData = new PartData(EntryType.PART);
 //            partData.setHasSequence(true);
@@ -66,7 +63,7 @@ public class RemoteGenBankPart {
 //                //
 //            }
 
-            return sequence;
+            return parser.parse(g.toString());
         }
     }
 }

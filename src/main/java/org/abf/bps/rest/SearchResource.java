@@ -9,9 +9,9 @@ import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.dto.search.SearchResults;
 import org.abf.bps.lib.index.RemoteGenBankPart;
 import org.abf.bps.lib.index.SearchIndex;
+import org.abf.bps.lib.part.IgemParts;
 import org.abf.bps.lib.part.Parts;
-import org.abf.bps.lib.scrape.AddGeneParts;
-import org.abf.bps.lib.scrape.IgemParts;
+import org.abf.bps.lib.part.AddGeneParts;
 import org.abf.bps.lib.search.blast.Constants;
 
 import javax.ws.rs.*;

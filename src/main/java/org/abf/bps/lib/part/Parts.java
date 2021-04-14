@@ -7,25 +7,10 @@ import org.abf.bps.lib.dto.entry.PartSequence;
 import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.index.RemoteGenBankPart;
 import org.abf.bps.lib.index.SearchIndex;
-import org.abf.bps.lib.scrape.AddGeneParts;
-import org.abf.bps.lib.scrape.IgemParts;
 import org.abf.bps.lib.search.blast.Constants;
 import org.abf.bps.rest.RestClient;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-public class Parts implements Iterator<PartSequence> {
-
-    private final List<PartsProducer> sources = new ArrayList<>();
-    private PartsProducer currentSource;
-    private boolean hasNextCalled = false;
-
-    // register a source of partSequences
-    public void registerSource(PartsProducer source) {
-        sources.add(source);
-    }
+public class Parts {
 
     public PartSequence get(String recordId) {
         try {
@@ -72,45 +57,5 @@ public class Parts implements Iterator<PartSequence> {
             Logger.error(e);
             return null;
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        hasNextCalled = true;
-
-        if (currentSource == null) {
-            if (sources.isEmpty())
-                return false;
-
-            currentSource = sources.remove(0);
-        }
-
-        boolean currentHasNext = currentSource.hasNext();
-
-        // iterate until we find next available data from the sources or run out of sources
-        while (!currentHasNext) {
-            if (sources.isEmpty())
-                return false;
-
-            currentSource = sources.remove(0);
-            currentHasNext = currentSource.hasNext();
-        }
-
-        return true;
-    }
-
-    public void skipCurrentPartSource() {
-        hasNextCalled = false;
-        this.currentSource = null;
-    }
-
-    @Override
-    public PartSequence next() {
-        if (!hasNextCalled)
-            throw new IllegalStateException("Cannot get next() without call to hasNext()");
-
-        PartSequence next = currentSource.next();
-        hasNextCalled = false;
-        return next;
     }
 }

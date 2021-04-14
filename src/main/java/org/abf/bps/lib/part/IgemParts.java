@@ -1,4 +1,4 @@
-package org.abf.bps.lib.scrape;
+package org.abf.bps.lib.part;
 
 import org.abf.bps.lib.common.logging.Logger;
 import org.abf.bps.lib.dto.DNAFeature;
@@ -8,7 +8,6 @@ import org.abf.bps.lib.dto.entry.EntryType;
 import org.abf.bps.lib.dto.entry.PartData;
 import org.abf.bps.lib.dto.entry.PartSequence;
 import org.abf.bps.lib.part.PartSource;
-import org.abf.bps.lib.part.PartsProducer;
 import org.abf.bps.lib.search.blast.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
@@ -17,90 +16,12 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.UUID;
-import java.util.stream.Stream;
 
-public class IgemParts implements PartsProducer {
-
-    private BufferedReader reader;
-    private Iterator<String> iterator;
-    private PartSequence nextSequence;
-
-    public IgemParts() {
-    }
-
-    private void initialize() throws IOException {
-        InputStream is = new URL(Constants.IGEM_ALL_PARTS_URL).openStream();
-        reader = new BufferedReader(new InputStreamReader(is));
-        Stream<String> stream = reader.lines();
-        iterator = stream.iterator();
-    }
-
-    @Override
-    public boolean hasNext() {
-        if (iterator == null) {
-            try {
-                initialize();
-            } catch (IOException e) {
-                Logger.error(e);
-                return false;
-            }
-        }
-
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            if (!next.startsWith(">"))
-                continue;
-
-            int i = next.indexOf(' ');
-            if (i == -1)
-                continue;
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                //
-            }
-
-            String partId = next.substring(1, i);
-            try {
-                nextSequence = parseIgemPart(partId);
-                if (nextSequence == null)
-                    continue;
-
-
-                return true;
-            } catch (Exception e) {
-                Logger.error(e);
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public PartSequence next() {
-        if (nextSequence == null)
-            throw new IllegalStateException("next part not available");
-        return nextSequence;
-    }
-
-    public void close() {
-        try {
-            if (reader != null)
-                reader.close();
-        } catch (IOException e) {
-            Logger.error(e);
-        }
-    }
+public class IgemParts {
 
     public static PartSequence parseIgemPart(String partId) throws Exception {
         String url = Constants.IGEM_XML_PART_URL_PREFIX + partId;
@@ -180,7 +101,7 @@ public class IgemParts implements PartsProducer {
 
                 case "part_entered":
                     try {
-                        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(element.getTextContent());
+                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(element.getTextContent());
                         partData.setCreationTime(date.getTime());
                     } catch (ParseException e) {
                         Logger.error(e);

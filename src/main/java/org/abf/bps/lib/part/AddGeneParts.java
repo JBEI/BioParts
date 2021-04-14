@@ -1,4 +1,4 @@
-package org.abf.bps.lib.scrape;
+package org.abf.bps.lib.part;
 
 import org.abf.bps.lib.common.logging.Logger;
 import org.abf.bps.lib.dto.FeaturedDNASequence;
@@ -8,7 +8,6 @@ import org.abf.bps.lib.dto.entry.PartSequence;
 import org.abf.bps.lib.dto.entry.PlasmidData;
 import org.abf.bps.lib.parsers.genbank.GenBankParser;
 import org.abf.bps.lib.part.PartSource;
-import org.abf.bps.lib.part.PartsProducer;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,22 +20,12 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AddGeneParts implements PartsProducer {
+public class AddGeneParts {
 
-    private int pageNumber = 1;
-    private boolean hasNextCalled = false;
-    private final List<PartSequence> results;
-
-    /**
-     * constructor. init
-     */
     public AddGeneParts() {
-        results = new ArrayList<>();
-//        retrieveAddGeneParts();
     }
 
     private FeaturedDNASequence parseRemoteSequence(String url) throws IOException {
@@ -51,7 +40,7 @@ public class AddGeneParts implements PartsProducer {
         out.close();
 
         // parse sequence
-        return new GenBankParser().parse(new String(out.toByteArray()));
+        return new GenBankParser().parse(out.toString());
     }
 
     private void setFullSequence(PartSequence plasmid, List<Node> nodes) throws IOException {
@@ -157,42 +146,6 @@ public class AddGeneParts implements PartsProducer {
         }
     }
 
-    private void retrieveAddGeneParts() {
-        results.clear();
-
-        try {
-            int resultsPerPage = 10;
-            String url = "https://www.addgene.org/search/advanced/?q=&results_per_page=" + resultsPerPage + "&page="
-                + pageNumber;
-
-            // for page of results
-            Document document = Jsoup.connect(url).get();
-            Elements elements = document.select("section#plasmid-results div.col-xs-3:contains(#)");
-
-            for (Element element : elements) {
-                List<Node> children = element.childNodes();
-                if (children.isEmpty())
-                    continue;
-
-                // fetch the plasmid number
-                TextNode node = (TextNode) children.get(0);
-                // expected format is "#number"
-                String[] split = node.text().split("#");
-                if (split.length != 2)
-                    continue;
-
-                String plasmidNumber = split[1];
-
-                // retrieve the plasmid data using the plasmid number and index
-                PartSequence sequence = retrievePlasmid(plasmidNumber.trim());
-                results.add(sequence);
-            }
-            pageNumber += 1;
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-    }
-
     public PartSequence retrievePlasmid(String plasmidId) {
         try {
             plasmidId = plasmidId.trim();
@@ -290,23 +243,5 @@ public class AddGeneParts implements PartsProducer {
             Logger.error("Exception indexing addgene " + plasmidId, e);
             return null;
         }
-    }
-
-    @Override
-    public boolean hasNext() {
-        hasNextCalled = true;
-        if (results.isEmpty()) {
-            retrieveAddGeneParts();
-        }
-
-        return !results.isEmpty();
-    }
-
-    @Override
-    public PartSequence next() {
-        if (!hasNextCalled)
-            throw new IllegalStateException("hasNext not called");
-        hasNextCalled = false;
-        return results.remove(0);
     }
 }

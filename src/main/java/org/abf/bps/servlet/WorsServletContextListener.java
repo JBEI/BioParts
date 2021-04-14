@@ -1,7 +1,6 @@
 package org.abf.bps.servlet;
 
 import org.abf.bps.lib.executor.IceExecutorService;
-import org.abf.bps.lib.search.blast.RebuildIndexes;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
