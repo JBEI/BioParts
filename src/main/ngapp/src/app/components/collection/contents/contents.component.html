@@ -297,7 +297,7 @@
         <div class="col-md-2" style="margin-top: 25px;">
             <small class="text-muted pull-right">Show:
                 <select (change)="folderPageChange()" [(ngModel)]="paging.limit"
-                        ng-options="opt for opt in paging.hstep"></select></small>
+                        ngModelOptions="opt for opt in paging.hstep"></select></small>
         </div>
     </div>
 </div>

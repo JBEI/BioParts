@@ -9,6 +9,7 @@ export class Paging {
     processing?: boolean;
     type?: string;
     sort: string;
+    pageSize: number;
 
     sortField: string;
     sortAscending: boolean;
@@ -22,5 +23,6 @@ export class Paging {
         this.processing = false;
         this.sort = 'id';
         this.asc = false;
+        this.pageSize = 5;
     }
 }

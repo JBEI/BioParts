@@ -3,6 +3,7 @@ import {HttpService} from "../../services/http.service";
 import {SearchService} from "../../services/search.service";
 import {SearchResults} from "../../models/search-results";
 import {SearchQuery} from "../../models/search-query";
+import {Paging} from "../../models/paging";
 
 @Component({
     selector: 'app-search',
@@ -16,65 +17,74 @@ export class SearchComponent implements OnInit {
     searchResults: SearchResults;
     loadingSearchResults: boolean;
     currentTooltip: any;
+    paging: Paging;
 
     constructor(private http: HttpService, private searchService: SearchService) {
+        this.paging = new Paging();
     }
 
     ngOnInit(): void {
         this.query = this.searchService.getQuery();
 
-        if (!this.query) {
+        if (!this.query.queryString || !this.query.blastQuery.sequence) {
             this.query = new SearchQuery();
             this.searchResults = new SearchResults();
+
+            // TODO : remove
+            this.runAdvancedSearch();
+            // TODO
         } else {
-            this.query.parameters.offset = 0;
+            this.paging.offset = 0;
             if (!this.query.blastQuery.blastProgram)
                 this.query.blastQuery.blastProgram = "BLAST_N";
-
             this.runAdvancedSearch();
         }
     }
 
     sortResults(field: string): void {
-        this.query.parameters.sortField = field;
-        this.query.parameters.offset = 0;
+        this.paging.sortField = field;
+        this.paging.offset = 0;
     }
 
     runAdvancedSearch(): void {
         this.query = this.searchService.getQuery();
 
-        if (!this.query.queryString) {
+        if (!this.query.queryString && !this.query.blastQuery.sequence) {
             this.searchResults = new SearchResults();
             return;
         }
 
         this.loadingSearchResults = true;
+
+        // reset search results
+        this.searchResults = undefined;
+
+        // run search
         this.http.post("search", this.query).subscribe((result) => {
             if (result) {
                 this.searchResults = result;
-                this.query.parameters.available = result.resultCount;
+                this.paging.available = result.resultCount;
                 this.loadingSearchResults = false;
             }
         }, (error) => {
             console.error(error);
             this.loadingSearchResults = false;
-            this.searchResults = undefined;
         });
     };
 
     setSelected(index): void {
-        this.query.parameters.offset = index;
+        this.paging.offset = index;
         this.searchService.setQuery(this.query);
     };
 
     hStepChanged(): void {
-        this.query.parameters.offset = 0;
-        this.query.parameters.currentPage = 1;
+        this.paging.offset = 0;
+        this.paging.currentPage = 1;
         this.runAdvancedSearch();
     };
 
     searchResultPageChanged(): void {
-        this.query.parameters.offset = ((this.query.parameters.currentPage - 1) * this.query.parameters.available) + 1;
+        this.paging.offset = ((this.paging.currentPage - 1) * this.paging.available) + 1;
         this.runAdvancedSearch();
     };
 
@@ -98,9 +108,10 @@ export class SearchComponent implements OnInit {
         });
     };
 
-    pageCounts(currentPage, resultCount, maxPageCount): string {
-        if (!maxPageCount)
-            maxPageCount = 30;
+    pageCounts(maxPageCount = 30): string {
+        const currentPage = this.paging.currentPage;
+        const resultCount = this.paging.available;
+
         const pageNum = ((currentPage - 1) * maxPageCount) + 1;
 
         // number on this page
