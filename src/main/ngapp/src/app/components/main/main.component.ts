@@ -31,6 +31,11 @@ export class MainComponent implements OnInit {
         this.router.navigate(['annotate']);
     }
 
+    resetBlastInput(): void {
+        this.query.blastQuery.sequence = '';
+        this.query.blastQuery.blastProgram = 'BLAST_N';
+    }
+
     showAddRegistryForm(): void {
     }
 }
