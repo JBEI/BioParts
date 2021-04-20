@@ -16,6 +16,5 @@ public class WorsServletContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        IceExecutorService.getInstance().stopService();
     }
 }
