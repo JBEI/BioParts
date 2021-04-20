@@ -1,9 +1,8 @@
-<app-header (runSearch)="runAdvancedSearch()"></app-header>
+<app-header (runSearch)="runAdvancedSearch()" class="fixed-top"></app-header>
 
-<div class="container-fluid">
+<br>
 
-    <!--    <pre>{{searchResults | json}}</pre>-->
-
+<div class="container-fluid" style="margin-top: 45px">
     <div *ngIf='loadingSearchResults' class="p-4 text-muted font-italic font-11em">
         <img src="assets/img/loader-mini.gif" alt="">
     </div>
@@ -14,90 +13,90 @@
 
     <div *ngIf="searchResults && searchResults.resultCount && !loadingSearchResults">
         <div class="row">
-            <div class="col-12">
-                <table class="table table-hover font-95em" *ngIf="!query.blastQuery || !query.blastQuery.sequence"
-                       [ngClass]="{'opacity-4':loadingSearchResults, 'border-bottom': searchResults && searchResults.resultCount}">
-                    <thead>
-                    <tr>
-                        <th (click)="sortResults('type')" class="cursor_pointer">
-                            <span>TYPE</span>&nbsp;
-                            <i *ngIf="paging.sortField!=='TYPE'" class="sortable fa fa-angle-down"></i>
-                            <i *ngIf="paging.sortField=='TYPE'" style="font-size: 14px;"
-                               class="fa opacity-4"
-                               [ngClass]="{'fa-angle-down':paging.sortAscending==false, 'fa-angle-up':paging.sortAscending==true}"></i>
-                        </th>
-                        <th (click)="sortResults('part_id')" class="cursor_pointer">
-                            <span style="font-size: 12px">PART ID</span>&nbsp;
-                            <i *ngIf="paging.sortField!=='PART_ID'" class="sortable fa fa-angle-down"></i>
-                            <i *ngIf="paging.sortField=='PART_ID'" style="font-size: 14px"
-                               class="fa opacity-4"
-                               [ngClass]="{'fa-angle-down':paging.sortAscending==false, 'fa-angle-up':paging.sortAscending==true}"></i>
-                        </th>
-                        <th (click)="sortResults('NAME')" class="cursor_pointer text-uppercase">
-                            <span>NAME</span>
-                            <i *ngIf="paging.sortField!=='NAME'" class="sortable fa fa-angle-down"></i>
-                            <i *ngIf="paging.sortField=='NAME'" style="font-size: 14px"
-                               class="fa opacity-4"
-                               [ngClass]="{'fa-angle-down':paging.sortAscending==false, 'fa-angle-up':paging.sortAscending==true}"></i>
-                        </th>
-                        <th style=" width:230px"><span>SOURCE</span></th>
-                        <th style="width:100px;">
-                            <i class="fa fa-flask fa-fw" style="font-size: 14px"></i>
-                            <img src="assets/img/dna.svg" width="15px" alt="has dna"/>
-                        </th>
-                        <th (click)="sortResults('created')" class="cursor_pointer" style="width: 120px">
-                            <span style="font-size: 11px">CREATED</span>
-                            <i *ngIf="paging.sortField==='CREATED'" style="font-size: 14px"
-                               class="fa opacity-4"
-                               [ngClass]="{'fa-angle-down':paging.sortAscending==false, 'fa-angle-up':paging.sortAscending==true}"></i>
-                            <i *ngIf="paging.sortField!=='CREATED'" class="sortable fa fa-angle-down"></i>
-                        </th>
-                    </tr>
-                    </thead>
+            <table class="table table-hover font-95em" *ngIf="!query.blastQuery || !query.blastQuery.sequence"
+                   [ngClass]="{'opacity-4':loadingSearchResults, 'border-bottom': searchResults && searchResults.resultCount}">
+                <thead class="bg-light">
+                <tr>
+                    <th (click)="sortResults('type')" class="cursor_pointer">
+                        <span>TYPE</span>&nbsp;
+                        <i *ngIf="query.parameters.sortField!=='TYPE'" class="sortable fa fa-angle-down"></i>
+                        <i *ngIf="query.parameters.sortField=='TYPE'" style="font-size: 14px;"
+                           class="fa opacity-4"
+                           [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
+                    </th>
+                    <th (click)="sortResults('part_id')" class="cursor_pointer">
+                        <span style="font-size: 12px">PART ID</span>&nbsp;
+                        <i *ngIf="query.parameters.sortField!=='PART_ID'" class="sortable fa fa-angle-down"></i>
+                        <i *ngIf="query.parameters.sortField=='PART_ID'" style="font-size: 14px"
+                           class="fa opacity-4"
+                           [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
+                    </th>
+                    <th (click)="sortResults('NAME')" class="cursor_pointer text-uppercase">
+                        <span>NAME</span>
+                        <i *ngIf="query.parameters.sortField!=='NAME'" class="sortable fa fa-angle-down"></i>
+                        <i *ngIf="query.parameters.sortField=='NAME'" style="font-size: 14px"
+                           class="fa opacity-4"
+                           [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
+                    </th>
+                    <th style=" width:230px"><span>SOURCE</span></th>
+                    <th style="width:100px;">
+                        <i class="fa fa-flask fa-fw" style="font-size: 14px"></i>
+                        <img src="assets/img/dna.svg" width="15px" alt="has dna"/>
+                    </th>
+                    <th (click)="sortResults('created')" class="cursor_pointer" style="width: 120px">
+                        <span style="font-size: 11px">CREATED</span>
+                        <i *ngIf="query.parameters.sortField==='CREATED'" style="font-size: 14px"
+                           class="fa opacity-4"
+                           [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
+                        <i *ngIf="query.parameters.sortField!=='CREATED'" class="sortable fa fa-angle-down"></i>
+                    </th>
+                </tr>
+                </thead>
 
-                    <tbody *ngIf="searchResults && !loadingSearchResults">
-                    <tr *ngFor="let result of searchResults.results; let i = index">
-                        <td class="entry-type">
-                            {{result.entryInfo.type}}
-                        </td>
-                        <td><a routerLink="/part/{{result.entryInfo.recordId}}" (click)="setSelected(i)"
-                               class="cell_mouseover form-group">{{result.entryInfo.partId}}</a>
-                        </td>
-                        <td>
-                            <div title="{{result.entryInfo.name}}" class="ellipsis" style="width: 350px">
-                                {{result.entryInfo.name}}
-                            </div>
-                            <div title="{{result.entryInfo.shortDescription}}" class="small"
-                                 style="opacity: 0.6; width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                {{result.entryInfo.shortDescription}}
-                            </div>
-                        </td>
-                        <td class="text-nowrap">
-                            <a [href]="result.partner.url" target="_blank">{{result.partner.name}}</a>
-                        </td>
-                        <td style="vertical-align: middle">
-                            <i *ngIf="result.entryInfo.hasSample" class="fa fa-flask fa-fw"
-                               style="color: #555; font-size: 14px;"></i>
-                            <i *ngIf="!result.entryInfo.hasSample" class="fa fa-square fa-fw"
-                               style="opacity: 0; font-size: 14px;"></i>
-                            <img *ngIf="result.entryInfo.hasSequence" src="assets/img/dna.svg" width="15px"/>
-                        </td>
-                        <td style="white-space:nowrap">{{result.entryInfo.creationTime | date:'MMM d, yyyy'}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                <tbody *ngIf="searchResults && !loadingSearchResults">
+                <tr *ngFor="let result of searchResults.results; let i = index">
+                    <td class="entry-type">
+                        {{result.entryInfo.type}}
+                    </td>
+                    <td><a routerLink="/part/{{result.entryInfo.recordId}}" (click)="setSelected(i)"
+                           class="cell_mouseover form-group">{{result.entryInfo.partId}}</a>
+                    </td>
+                    <td>
+                        <div title="{{result.entryInfo.name}}" class="ellipsis" style="width: 350px">
+                            {{result.entryInfo.name}}
+                        </div>
+                        <div title="{{result.entryInfo.shortDescription}}" class="small"
+                             style="opacity: 0.6; width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{result.entryInfo.shortDescription}}
+                        </div>
+                    </td>
+                    <td class="text-nowrap">
+                        <a [href]="result.partner.url" target="_blank">{{result.partner.name}}</a>
+                    </td>
+                    <td style="vertical-align: middle">
+                        <i *ngIf="result.entryInfo.hasSample" class="fa fa-flask fa-fw"
+                           style="color: #555; font-size: 14px;"></i>
+                        <i *ngIf="!result.entryInfo.hasSample" class="fa fa-square fa-fw"
+                           style="opacity: 0; font-size: 14px;"></i>
+                        <img *ngIf="result.entryInfo.hasSequence" src="assets/img/dna.svg" width="15px"/>
+                    </td>
+                    <td style="white-space:nowrap">{{result.entryInfo.creationTime | date:'MMM d, yyyy'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row align-content-md-center"
+         *ngIf="searchResults && searchResults.resultCount && !loadingSearchResults">
+        <div class="col-4">
+            <ngb-pagination [collectionSize]="query.parameters.available" [(page)]="query.parameters.currentPage"
+                            [pageSize]="query.parameters.pageSize" [maxSize]="5"
+                            (pageChange)="searchResultPageChanged()"
+                            [disabled]="query.parameters.available <= query.parameters.retrieveCount"></ngb-pagination>
         </div>
 
-        <div class="row align-content-md-center">
-            <div class="col-4">
-                <ngb-pagination [collectionSize]="searchResults.resultCount" [(page)]="paging.currentPage"
-                                [pageSize]="paging.pageSize" [maxSize]="8" (pageChange)="searchResultPageChanged()"
-                                [disabled]="paging.available <= searchResults.resultCount"></ngb-pagination>
-            </div>
-
-            <div class="col-4 font-weight-bold">{{pageCounts()}}</div>
-            <div class="col-4"></div>
-        </div>
+        <div class="col-4 font-weight-bold">{{pageCounts()}}</div>
+        <div class="col-4"></div>
     </div>
 </div>
