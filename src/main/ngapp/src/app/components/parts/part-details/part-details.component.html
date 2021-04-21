@@ -2,8 +2,9 @@
 
     <app-header></app-header>
 
-    <div class="col-12 p-0" [ngClass]="{'opacity-3': !partSequence}">
+    <div class="col-12 p-0" [ngClass]="{'opacity-3': !partSequence}" *ngIf="partSequence">
         <div class="d-flex border-top p-3" style="background-color: #f1f5f8">
+
             <div class="flex-lg-fill">
 
                 <!-- go back arrow -->

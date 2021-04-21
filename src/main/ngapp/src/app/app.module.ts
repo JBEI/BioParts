@@ -9,7 +9,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {TextResultsComponent} from './components/search/text-results/text-results.component';
-import {PartDetailsResolver} from "./components/search/entry/details/part.details.resolver";
 import {AnnotateComponent} from './components/annotate/annotate.component';
 import {HeaderComponent} from "./components/header/header.component";
 import {SearchBarComponent} from "./components/search/search-bar/search-bar.component";
@@ -47,7 +46,7 @@ import {AutoCompleteFieldComponent} from "./components/parts/widgets/auto-comple
         NgbTooltipModule,
         NgbPaginationModule
     ],
-    providers: [PartDetailsResolver],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {

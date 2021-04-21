@@ -22,12 +22,16 @@ export class PartDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe((data) => {
-            this.partSequence = data.partSequence;
+        this.http.get('search/' + this.route.snapshot.params['partId']).subscribe((data: PartWithSequence) => {
+            this.partSequence = data;
             this.route.params.subscribe(result => {
                 this.partSequence.part.recordId = result.partId;
             })
         });
+
+        // this.route.params.subscribe((params) => {
+        //     console.log('partId', params['partId'])
+        // });
 
         this.selection = 'general';
         this.details = false;
