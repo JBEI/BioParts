@@ -8,12 +8,11 @@
         <!--        </span>-->
         <!--    </div>-->
 
-        <div ngbDropdownMenu style="width: 585px" class="p-3">
-            <b>BLAST</b><br>
-            <textarea class="form-control" name="sequence" [(ngModel)]="query.blastQuery.sequence"
-                      placeholder="Enter Sequence"></textarea>
-            <br>
-            <button class="btn btn-sm btn-primary pull-right">Search</button>
+        <div ngbDropdownMenu style="width: 583px" class="p-2">
+            <b class="font-95em">BLAST</b>
+            <textarea class="form-control form-control-sm" name="sequence" [(ngModel)]="query.blastQuery.sequence"
+                      placeholder="Enter Sequence" rows="6"></textarea>
+            <button class="btn btn-sm btn-primary pull-right mt-2">Search</button>
         </div>
 
         <input type="text" [(ngModel)]="query.queryString" class=" border-right-0" name="searchTerms"

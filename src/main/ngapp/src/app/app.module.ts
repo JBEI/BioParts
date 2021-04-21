@@ -19,7 +19,6 @@ import {SequenceComponent} from "./components/visualization/sequence/sequence.co
 import {OptionsFieldComponent} from "./components/parts/widgets/options-field/options-field.component";
 import {WithEmailFieldComponent} from "./components/parts/widgets/with-email-field/with-email-field.component";
 import {AutoCompleteFieldComponent} from "./components/parts/widgets/auto-complete-field/auto-complete-field.component";
-import {ContentsComponent} from "./components/collection/contents/contents.component";
 
 @NgModule({
     declarations: [
@@ -36,8 +35,7 @@ import {ContentsComponent} from "./components/collection/contents/contents.compo
         PartGeneralInformationComponent,
         OptionsFieldComponent,
         WithEmailFieldComponent,
-        AutoCompleteFieldComponent,
-        ContentsComponent
+        AutoCompleteFieldComponent
     ],
     imports: [
         BrowserModule,

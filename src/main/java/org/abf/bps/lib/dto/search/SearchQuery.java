@@ -35,12 +35,6 @@ public class SearchQuery implements IDataTransferModel {
         return blastQuery != null && blastQuery.getSequence() != null && !blastQuery.getSequence().isEmpty();
     }
 
-    public boolean hasFilter() {
-        return parameters != null && (fieldFilters == null || fieldFilters.isEmpty()) &&
-            (parameters.getHasAttachment() || parameters.getHasSample() ||
-                parameters.getHasSequence() || bioSafetyOption != null);
-    }
-
     public String getQueryString() {
         return queryString;
     }
@@ -88,7 +82,7 @@ public class SearchQuery implements IDataTransferModel {
 
     public static class Parameters implements IDataTransferModel {
 
-        public static final long serialVersionUID = 1l;
+        public static final long serialVersionUID = 1L;
 
         private ColumnField sortField;
         private boolean sortAscending;

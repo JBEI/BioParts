@@ -2,8 +2,8 @@ export class Paging {
     currentPage: number;
     available: number;
     asc: boolean;
-    limit: number;
-    offset: number;
+    retrieveCount: number;
+    start: number;
     index?: number;
     filterText: string;
     processing?: boolean;
@@ -17,8 +17,8 @@ export class Paging {
     constructor() {
         this.currentPage = 1;
         this.available = 0;
-        this.limit = 15;
-        this.offset = 0;
+        this.retrieveCount = 30;
+        this.start = 0;
         this.filterText = '';
         this.processing = false;
         this.sort = 'id';

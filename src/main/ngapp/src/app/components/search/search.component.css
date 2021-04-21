@@ -10,3 +10,11 @@ table th span {
     font-size: 12px;
     text-transform: uppercase;
 }
+
+th i.sortable {
+    opacity: 0;
+}
+
+th:hover i.sortable {
+    opacity: 0.4;
+}

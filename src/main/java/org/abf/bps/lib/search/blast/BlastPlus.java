@@ -10,13 +10,11 @@ import org.abf.bps.lib.dto.search.BlastQuery;
 import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.index.SearchIndex;
 import org.abf.bps.lib.utils.Utils;
-import org.apache.commons.io.FileUtils;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.symbol.IllegalSymbolException;
 import org.biojava.bio.symbol.SymbolList;
 
 import java.io.*;
-import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,17 +35,14 @@ import java.util.List;
 public class BlastPlus implements Closeable {
 
     private final BufferedWriter writer;
-    private final File lockFile;
-    private final FileLock lock;
-
     private final Path blastDbFolder;
 
     private static final String BLAST_FOLDER = "blast";                 // folder in the data directory for blast
-    private static final String BLAST_DB_NAME = "wors";                 // name of the blast database
+    private static final String BLAST_DB_NAME = "bps";                  // name of the blast database
     private static final String BLAST_DB_FOLDER = "db";                 // folder for creating blast database
     private static final String BLAST_FASTA_FILE = "blastfastafile.fa"; // name of fasta file for blast database
 
-    // /data_dir/blast/{db/wors*|blastfastafile.fa}
+    // /data_dir/blast/{db/bps*|blastfastafile.fa}
     public BlastPlus() throws IOException {
         blastDbFolder = Paths.get(Constants.DATA_DIR, BLAST_FOLDER, BLAST_DB_FOLDER);
         Logger.info("Using blast index folder at: " + blastDbFolder.getParent().toString());
@@ -56,21 +51,9 @@ public class BlastPlus implements Closeable {
             Files.createDirectories(blastDbFolder);
         }
 
-        // check that there isn't a lock file for blast
-        lockFile = Paths.get(blastDbFolder.getParent().toString(), Constants.LOCK_FILE_NAME).toFile();
-        if (lockFile.exists())
-            throw new IOException("Existing lock file: " + lockFile.toString());
-
-        Logger.info("Creating new lock file: " + lockFile.toString());
-        if (!lockFile.createNewFile())
-            throw new IOException("Could not create lock file: " + lockFile.toString());
-
         // check fasta file used to create blast database
         writer = Files.newBufferedWriter(Paths.get(blastDbFolder.getParent().toString(), BLAST_FASTA_FILE), Charset.defaultCharset(),
             StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-
-        FileOutputStream fos = new FileOutputStream(lockFile);
-        lock = fos.getChannel().tryLock();
     }
 
     /**
@@ -328,11 +311,8 @@ public class BlastPlus implements Closeable {
 
     @Override
     public void close() throws IOException {
-        lock.close();
         writer.close();
         formatBlastDb();
-
-        FileUtils.deleteQuietly(lockFile);
     }
 
     /**

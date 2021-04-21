@@ -3,7 +3,6 @@ import {HttpService} from "../../services/http.service";
 import {SearchService} from "../../services/search.service";
 import {SearchResults} from "../../models/search-results";
 import {SearchQuery} from "../../models/search-query";
-import {Paging} from "../../models/paging";
 
 @Component({
     selector: 'app-search',
@@ -17,24 +16,17 @@ export class SearchComponent implements OnInit {
     searchResults: SearchResults;
     loadingSearchResults: boolean;
     currentTooltip: any;
-    paging: Paging;
 
     constructor(private http: HttpService, private searchService: SearchService) {
-        this.paging = new Paging();
     }
 
     ngOnInit(): void {
         this.query = this.searchService.getQuery();
-
-        if (!this.query.queryString || !this.query.blastQuery.sequence) {
+        if (!this.query.queryString && !this.query.blastQuery.sequence) {
             this.query = new SearchQuery();
             this.searchResults = new SearchResults();
-
-            // TODO : remove
-            this.runAdvancedSearch();
-            // TODO
         } else {
-            this.paging.offset = 0;
+            this.query.parameters.start = 0;
             if (!this.query.blastQuery.blastProgram)
                 this.query.blastQuery.blastProgram = "BLAST_N";
             this.runAdvancedSearch();
@@ -42,12 +34,14 @@ export class SearchComponent implements OnInit {
     }
 
     sortResults(field: string): void {
-        this.paging.sortField = field;
-        this.paging.offset = 0;
+        this.query.parameters.sortField = field;
+        this.query.parameters.start = 0;
     }
 
     runAdvancedSearch(): void {
         this.query = this.searchService.getQuery();
+        if (this.query.parameters.retrieveCount === 1)
+            this.query.parameters.retrieveCount = 30;
 
         if (!this.query.queryString && !this.query.blastQuery.sequence) {
             this.searchResults = new SearchResults();
@@ -63,7 +57,7 @@ export class SearchComponent implements OnInit {
         this.http.post("search", this.query).subscribe((result) => {
             if (result) {
                 this.searchResults = result;
-                this.paging.available = result.resultCount;
+                this.query.parameters.available = result.resultCount;
                 this.loadingSearchResults = false;
             }
         }, (error) => {
@@ -73,18 +67,18 @@ export class SearchComponent implements OnInit {
     };
 
     setSelected(index): void {
-        this.paging.offset = index;
+        this.query.parameters.start = index;
         this.searchService.setQuery(this.query);
     };
 
     hStepChanged(): void {
-        this.paging.offset = 0;
-        this.paging.currentPage = 1;
+        this.query.parameters.start = 0;
+        this.query.parameters.currentPage = 1;
         this.runAdvancedSearch();
     };
 
     searchResultPageChanged(): void {
-        this.paging.offset = ((this.paging.currentPage - 1) * this.paging.available) + 1;
+        this.query.parameters.start = ((this.query.parameters.currentPage - 1) * this.query.parameters.retrieveCount) + 1;
         this.runAdvancedSearch();
     };
 
@@ -101,16 +95,9 @@ export class SearchComponent implements OnInit {
         return 'info';
     };
 
-    tooltipDetails(entry): void {
-        this.currentTooltip = undefined;
-        this.http.get("parts/" + entry.id + "/tooltip").subscribe((result) => {
-            this.currentTooltip = result;
-        });
-    };
-
     pageCounts(maxPageCount = 30): string {
-        const currentPage = this.paging.currentPage;
-        const resultCount = this.paging.available;
+        const currentPage = this.query.parameters.currentPage;
+        const resultCount = this.query.parameters.available;
 
         const pageNum = ((currentPage - 1) * maxPageCount) + 1;
 
