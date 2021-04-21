@@ -4,7 +4,7 @@ package org.abf.bps.lib.search.blast;
 public class Constants {
 
     // location of data directory
-    public static final String DATA_DIR = "/Users/haplahar/bps/data";
+    public static final String DATA_DIR = "/var/lib/bp";
 
     // blast installation location (must point to the "bin" folder)
     public static final String BLAST_INSTALL = "/usr/local/ncbi/blast/bin";  // = ";

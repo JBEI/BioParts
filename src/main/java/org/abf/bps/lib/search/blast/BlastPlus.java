@@ -3,24 +3,15 @@ package org.abf.bps.lib.search.blast;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.abf.bps.lib.common.logging.Logger;
-import org.abf.bps.lib.dto.FeaturedDNASequence;
-import org.abf.bps.lib.dto.entry.PartData;
 import org.abf.bps.lib.dto.search.BlastProgram;
 import org.abf.bps.lib.dto.search.BlastQuery;
 import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.index.SearchIndex;
-import org.abf.bps.lib.utils.Utils;
-import org.biojava.bio.seq.DNATools;
-import org.biojava.bio.symbol.IllegalSymbolException;
-import org.biojava.bio.symbol.SymbolList;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,15 +23,13 @@ import java.util.List;
  *
  * @author Hector Plahar
  */
-public class BlastPlus implements Closeable {
+public class BlastPlus {
 
-    private final BufferedWriter writer;
     private final Path blastDbFolder;
 
     private static final String BLAST_FOLDER = "blast";                 // folder in the data directory for blast
     private static final String BLAST_DB_NAME = "bps";                  // name of the blast database
     private static final String BLAST_DB_FOLDER = "db";                 // folder for creating blast database
-    private static final String BLAST_FASTA_FILE = "blastfastafile.fa"; // name of fasta file for blast database
 
     // /data_dir/blast/{db/bps*|blastfastafile.fa}
     public BlastPlus() throws IOException {
@@ -50,10 +39,6 @@ public class BlastPlus implements Closeable {
         if (!Files.exists(blastDbFolder)) {
             Files.createDirectories(blastDbFolder);
         }
-
-        // check fasta file used to create blast database
-        writer = Files.newBufferedWriter(Paths.get(blastDbFolder.getParent().toString(), BLAST_FASTA_FILE), Charset.defaultCharset(),
-            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
     /**
@@ -204,87 +189,6 @@ public class BlastPlus implements Closeable {
     }
 
     /**
-     * Generates (and runs) command line commands for creating the blast database
-     *
-     * @throws IOException on exception getting the results of the command line run
-     */
-    private void formatBlastDb() throws IOException {
-        ArrayList<String> commands = new ArrayList<>();
-
-        // create command line command
-        commands.add(Paths.get(Constants.BLAST_INSTALL, "makeblastdb").toString());
-        commands.add("-dbtype nucl");
-        commands.add("-in");
-        commands.add(Paths.get(blastDbFolder.getParent().toString(), BLAST_FASTA_FILE).toString());
-
-        commands.add("-logfile");
-        commands.add(Paths.get(blastDbFolder.toString(), (BLAST_DB_NAME + ".log")).toString());
-
-        commands.add("-out");
-        commands.add(Paths.get(blastDbFolder.toString(), BLAST_DB_NAME).toString());
-
-        String commandString = Utils.join(" ", commands);
-        Logger.info("makeblastdb: " + commandString);
-
-        // run command
-        Runtime runTime = Runtime.getRuntime();
-        Path blastDbDir = Paths.get(Constants.BLAST_INSTALL);
-        Process process = runTime.exec(commandString, new String[0], blastDbDir.toFile());
-
-        // wait for and get results of run
-        InputStream blastOutputStream = process.getInputStream();
-        InputStream blastErrorStream = process.getErrorStream();
-        try {
-            process.waitFor();
-        } catch (InterruptedException e) {
-            throw new IOException(e);
-        }
-        String outputString = Utils.getString(blastOutputStream);
-        blastOutputStream.close();
-        Logger.debug("format output was: " + outputString);
-
-        String errorString = Utils.getString(blastErrorStream);
-        blastErrorStream.close();
-        Logger.debug("format error was: " + errorString);
-        process.destroy();
-
-        if (errorString.length() > 0) {
-            Logger.error(errorString);
-            throw new IOException("Could not make blast db");
-        }
-    }
-
-    /**
-     * Write the sequence file for the associated part data to fasta file for blast
-     *
-     * @param partData part data
-     * @param sequence sequence data
-     * @throws IOException on exception writing fasta sequence
-     */
-    public void writeSequenceToFasta(PartData partData, FeaturedDNASequence sequence) throws IOException {
-        if (partData == null || sequence == null || sequence.getSequence() == null || sequence.getSequence().isEmpty())
-            return;
-
-        // get sequence from
-        String sequenceString;
-        SymbolList symL;
-        try {
-            symL = DNATools.createDNA(sequence.getSequence().trim());
-            sequenceString = breakUpLines(symL.seqString() + symL.seqString());
-        } catch (IllegalSymbolException e1) {
-            Logger.error(e1);
-            return;
-        }
-
-        sequenceString = sequenceString.replaceAll("\n", "");
-        if (sequenceString.length() > 0) {
-            writer.write(">" + partData.getRecordId() + "\n");
-            writer.write(sequenceString + "\n");
-            writer.flush();
-        }
-    }
-
-    /**
      * Format into 6 column, 10 basepairs per column display.
      *
      * @param input sequence string.
@@ -307,12 +211,6 @@ public class BlastPlus implements Closeable {
             }
         }
         return result.toString();
-    }
-
-    @Override
-    public void close() throws IOException {
-        writer.close();
-        formatBlastDb();
     }
 
     /**
