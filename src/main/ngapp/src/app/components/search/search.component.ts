@@ -55,6 +55,8 @@ export class SearchComponent implements OnInit {
 
         // run search
         this.http.post("search", this.query).subscribe((result) => {
+            console.log(result);
+
             if (result) {
                 this.searchResults = result;
                 this.query.parameters.available = result.resultCount;

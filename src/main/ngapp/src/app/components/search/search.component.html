@@ -13,7 +13,7 @@
 
     <div *ngIf="searchResults && searchResults.resultCount && !loadingSearchResults">
         <div class="row">
-            <table class="table table-hover" *ngIf="!query.blastQuery || !query.blastQuery.sequence"
+            <table class="table table-hover"
                    [ngClass]="{'opacity-4':loadingSearchResults, 'border-bottom': searchResults && searchResults.resultCount}">
                 <thead class="bg-light">
                 <tr>

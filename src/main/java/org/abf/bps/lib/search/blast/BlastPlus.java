@@ -81,7 +81,7 @@ public class BlastPlus implements Closeable {
 
             blastCommand[0] = commandPath.toString();
             blastCommand[1] = "-db";
-            blastCommand[2] = blastDbFile.getParent().toString();
+            blastCommand[2] = Paths.get(blastDbFile.getParent().toString(), BLAST_DB_NAME).toString();
             System.arraycopy(options, 0, blastCommand, 3, options.length);
 
             Process process = Runtime.getRuntime().exec(blastCommand);

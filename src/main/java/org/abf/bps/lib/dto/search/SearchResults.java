@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class SearchResults implements IDataTransferModel {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     private long resultCount;
     private LinkedList<SearchResult> results;
@@ -87,9 +87,9 @@ public class SearchResults implements IDataTransferModel {
             String[] o2RemainderSplit = o2AlignmentSplit[1].split("\\(");
 
             // first value is equal check second value
-            Integer o22 = Integer.valueOf(o2RemainderSplit[0].trim());
-            Integer o12 = Integer.valueOf(o1RemainderSplit[0].trim());
-            if (o22.intValue() != o12.intValue()) {
+            int o22 = Integer.parseInt(o2RemainderSplit[0].trim());
+            int o12 = Integer.parseInt(o1RemainderSplit[0].trim());
+            if (o22 != o12) {
                 return Double.compare(((double) o21 / (double) o22), ((double) o11 / (double) o12));
             }
 

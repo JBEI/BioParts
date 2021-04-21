@@ -99,6 +99,7 @@ public class SearchIndex {
             BlastPlus blastPlus = new BlastPlus();
             HashMap<String, SearchResult> results = blastPlus.runBlast(blastQuery);
             SearchResults searchResults = new SearchResults();
+            searchResults.setResultCount(results.size());
 
             for (Map.Entry<String, SearchResult> entry : results.entrySet()) {
                 searchResults.getResults().add(entry.getValue());
