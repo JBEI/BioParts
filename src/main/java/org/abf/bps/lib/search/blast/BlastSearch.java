@@ -36,6 +36,8 @@ public class BlastSearch {
         if (query.getBlastProgram() == null)
             query.setBlastProgram(BlastProgram.BLAST_N);
 
+//        String hash = DigestUtils.md5Hex(query.getSequence());
+
         try {
             Path commandPath = Paths.get(Constants.BLAST_INSTALL, query.getBlastProgram().getName());
             String blastDb = Paths.get(this.indexPath.toString(), this.dbName).toString();

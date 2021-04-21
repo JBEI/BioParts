@@ -3,12 +3,12 @@ package org.abf.bps.lib.search.blast;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.abf.bps.lib.common.logging.Logger;
-import org.abf.bps.lib.dto.search.BlastProgram;
 import org.abf.bps.lib.dto.search.BlastQuery;
 import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.index.SearchIndex;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +31,6 @@ public class BlastPlus {
     private static final String BLAST_DB_NAME = "bps";                  // name of the blast database
     private static final String BLAST_DB_FOLDER = "db";                 // folder for creating blast database
 
-    // /data_dir/blast/{db/bps*|blastfastafile.fa}
     public BlastPlus() throws IOException {
         blastDbFolder = Paths.get(Constants.DATA_DIR, BLAST_FOLDER, BLAST_DB_FOLDER);
         Logger.info("Using blast index folder at: " + blastDbFolder.getParent().toString());
@@ -52,55 +51,8 @@ public class BlastPlus {
      * @throws BlastException on exception running blast on the command line
      */
     private String runBlastQuery(BlastQuery query, String... options) throws BlastException {
-        if (query.getBlastProgram() == null)
-            query.setBlastProgram(BlastProgram.BLAST_N);
-
-        try {
-            Path blastDbFile = Paths.get(this.blastDbFolder.toString(), (BLAST_DB_NAME + ".nsq"));
-            if (!Files.exists(blastDbFile)) {
-                return "";
-            }
-
-            String[] blastCommand = new String[3 + options.length];
-            Path commandPath = Paths.get(Constants.BLAST_INSTALL, query.getBlastProgram().getName());
-
-            blastCommand[0] = commandPath.toString();
-            blastCommand[1] = "-db";
-            blastCommand[2] = Paths.get(blastDbFile.getParent().toString(), BLAST_DB_NAME).toString();
-            System.arraycopy(options, 0, blastCommand, 3, options.length);
-
-            Process process = Runtime.getRuntime().exec(blastCommand);
-            ProcessResultReader reader = new ProcessResultReader(process.getInputStream());
-            reader.start();
-            BufferedWriter programInputWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-
-            programInputWriter.write(query.getSequence());
-            programInputWriter.flush();
-            programInputWriter.close();
-            process.getOutputStream().close();
-
-            // TODO this should go into the thread itself & have future wait on it
-            final int exitValue = process.waitFor();
-            switch (exitValue) {
-                case 0:
-                    return reader.toString();
-
-                case 1:
-                    Logger.error("Error in query sequence(s) or BLAST options");
-                    break;
-
-                case 2:
-                    Logger.error("Error in BLAST database");
-                    break;
-
-                default:
-                    Logger.error("Unknown exit value " + exitValue);
-            }
-            return null;
-        } catch (Exception e) {
-            Logger.error(e);
-            throw new BlastException(e);
-        }
+        BlastSearch blastSearch = new BlastSearch(this.blastDbFolder, BLAST_DB_NAME);
+        return blastSearch.run(query, options);
     }
 
     /**
@@ -211,36 +163,5 @@ public class BlastPlus {
             }
         }
         return result.toString();
-    }
-
-    /**
-     * Thread that reads the result of a command line process execution
-     */
-    static class ProcessResultReader extends Thread {
-        final InputStream inputStream;
-        final StringBuilder sb;
-
-        ProcessResultReader(final InputStream is) {
-            this.inputStream = is;
-            this.sb = new StringBuilder();
-        }
-
-        public void run() {
-            try (final InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
-                final BufferedReader br = new BufferedReader(inputStreamReader);
-                String line;
-                while ((line = br.readLine()) != null) {
-                    this.sb.append(line).append("\n");
-                }
-            } catch (final IOException ioe) {
-                Logger.error(ioe.getMessage());
-                throw new RuntimeException(ioe);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.sb.toString();
-        }
     }
 }
