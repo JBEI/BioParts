@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Logger {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("org.jbei.ice");
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("org.abf.bps");
 
     public static void error(String message) {
         LOGGER.error(message);
