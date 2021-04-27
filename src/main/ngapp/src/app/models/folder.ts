@@ -1,5 +1,5 @@
 import {Part} from "./Part";
-import {User} from "./User";
+import {User} from "./user";
 import {RegistryPartner} from "./registry-partner";
 
 export class Folder {
@@ -18,3 +18,4 @@ export class Folder {
     entries: Part[];
     accessPermissions: any[];
 }
+
