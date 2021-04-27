@@ -6,9 +6,9 @@ import org.abf.bps.lib.dto.entry.EntryType;
 import org.abf.bps.lib.dto.entry.PartData;
 import org.abf.bps.lib.dto.entry.PartSequence;
 import org.abf.bps.lib.dto.entry.PlasmidData;
-import org.abf.bps.lib.parsers.genbank.GenBankParser;
-import org.abf.bps.lib.part.PartSource;
+import org.abf.bps.lib.utils.SeqUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.biojava.nbio.core.sequence.DNASequence;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +17,6 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -35,12 +34,8 @@ public class AddGeneParts {
             .maxBodySize(10 * 1000 * 1000)  // accept 10M bytes (default is 1M), or set to 0 for unlimited
             .execute();                     // send GET request
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        out.write(response.bodyAsBytes());
-        out.close();
-
-        // parse sequence
-        return new GenBankParser().parse(out.toString());
+        DNASequence dnaSequence = SeqUtils.parseGenbank(response.bodyStream());
+        return SeqUtils.convert(dnaSequence);
     }
 
     private void setFullSequence(PartSequence plasmid, List<Node> nodes) throws IOException {

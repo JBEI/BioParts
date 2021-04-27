@@ -1,14 +1,16 @@
 package org.abf.bps.lib.index;
 
 import org.abf.bps.lib.dto.FeaturedDNASequence;
-import org.abf.bps.lib.parsers.genbank.GenBankParser;
 import org.abf.bps.lib.search.blast.Constants;
+import org.biojava.nbio.core.sequence.io.GenbankReaderHelper;
 import org.jsoup.Jsoup;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -46,7 +48,7 @@ public class RemoteGenBankPart {
                     break;
             }
 
-            GenBankParser parser = new GenBankParser();
+            GenbankReaderHelper.readGenbankDNASequence(new ByteArrayInputStream(g.toString().getBytes(StandardCharsets.UTF_8)));
 
 //            PartData partData = new PartData(EntryType.PART);
 //            partData.setHasSequence(true);
@@ -63,7 +65,8 @@ public class RemoteGenBankPart {
 //                //
 //            }
 
-            return parser.parse(g.toString());
+            // TODO: convert to FeaturedDNASequence
+            return null;
         }
     }
 }

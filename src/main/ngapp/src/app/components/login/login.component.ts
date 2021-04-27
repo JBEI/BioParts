@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../../services/http.service";
 import {User} from "../../models/User";
-import {Router} from "@angular/router";
-import {UserService} from "../../services/user.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
 
     // init
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
     errMsg = undefined;
     validation: { validId: boolean, validPassword: boolean, invalidPassword: boolean, processing: boolean };
 
-    constructor(private http: HttpService, private router: Router, private userService: UserService) {
+    constructor(private http: HttpService) {
         this.validation = {validId: true, validPassword: true, invalidPassword: false, processing: false};
         this.login = new User();
     }
@@ -74,24 +73,24 @@ export class LoginComponent implements OnInit {
         }
 
         console.log("login");
-        this.http.post("accesstokens", this.login).subscribe((result: User) => {
-            if (result && result.sessionId) {
-                this.userService.setUser(result);
-
-                // redirect
-                let redirectUrl = this.userService.getLoginRedirect();
-                if (redirectUrl === '/register' || redirectUrl === '/forgotPassword' || redirectUrl === '/login' || !redirectUrl) {
-                    redirectUrl = '/';
-                }
-                this.router.navigate([redirectUrl]);
-                // Util.clearFeedback();
-            } else {
-                this.userService.clearUser();
-            }
-            this.validation.processing = false;
-        }, (error: any) => {
-            this.errMsg = error.statusText;
-            this.validation.processing = false;
-        });
+        // this.http.post("accesstokens", this.login).subscribe((result: User) => {
+        //     if (result && result.sessionId) {
+        //         this.userService.setUser(result);
+        //
+        //         // redirect
+        //         let redirectUrl = this.userService.getLoginRedirect();
+        //         if (redirectUrl === '/register' || redirectUrl === '/forgotPassword' || redirectUrl === '/login' || !redirectUrl) {
+        //             redirectUrl = '/';
+        //         }
+        //         this.router.navigate([redirectUrl]);
+        //         // Util.clearFeedback();
+        //     } else {
+        //         this.userService.clearUser();
+        //     }
+        //     this.validation.processing = false;
+        // }, (error: any) => {
+        //     this.errMsg = error.statusText;
+        //     this.validation.processing = false;
+        // });
     };
 }
