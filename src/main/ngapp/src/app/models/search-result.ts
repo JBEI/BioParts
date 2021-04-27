@@ -1,5 +1,5 @@
-import {RegistrySource} from "./registry-source";
-import {Part} from "./part";
+import {RegistrySource} from './registry-source';
+import {Part} from './part';
 
 export class SearchResult {
     eValue: string;
@@ -8,7 +8,7 @@ export class SearchResult {
     nident: number;
     score: number;
     maxScore: number;
-    matchDetails?: String[];
+    matchDetails?: string[];
     partner: RegistrySource;
     entryInfo: Part;
 }
