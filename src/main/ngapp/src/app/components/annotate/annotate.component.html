@@ -3,16 +3,21 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-8">
-            <app-sequence [sequence]="sequence"></app-sequence>
+            <div id="annotation-preview-root" style="height: 645px; width: 100%">
+                <br>
+                <img src="assets/img/loader-mini.gif"/> <span
+                class="text-muted"> Loading sequence visualization&hellip;</span>
+            </div>
+            <!--            <app-sequence [sequence]="sequence"></app-sequence>-->
         </div>
 
         <div class="col-4">
-            <div class="p-4 text-muted font-italic border mt-3">
+            <div class="p-4 text-muted font-italic border mt-3" *ngIf="!features || !features.length">
                 No matching annotations found
             </div>
 
-            <table class="table-sm table-bordered w-100" *ngIf="features && features.length">
-                <thead>
+            <table class="table-sm table-bordered w-100 mt-3 font-85em" *ngIf="features && features.length">
+                <thead class="font-weight-bold text-uppercase font-85em">
                 <tr>
                     <td></td>
                     <td>Type</td>

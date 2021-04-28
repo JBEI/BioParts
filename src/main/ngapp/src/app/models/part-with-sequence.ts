@@ -1,4 +1,4 @@
-import {Sequence} from "./sequence";
+import {Sequence} from "./Sequence";
 import {Part} from "./part";
 import {PartSource} from "./part-source";
 

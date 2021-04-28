@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {SearchService} from "../../services/search.service";
 import {SearchQuery} from "../../models/search-query";
 import {HttpService} from "../../services/http.service";
-import {Sequence} from "../../models/sequence";
+import {Sequence} from "../../models/Sequence";
+import {VectorEditorService} from "../visualization/sequence/vector-editor.service";
 
 @Component({
     selector: 'app-annotate',
@@ -15,8 +16,10 @@ export class AnnotateComponent implements OnInit {
     features: any[];
     sequence: Sequence;
     selectedFeatures: any[];
+    data: any;
+    editor: any;
 
-    constructor(private searchService: SearchService, private http: HttpService) {
+    constructor(private vectorEditor: VectorEditorService, private searchService: SearchService, private http: HttpService) {
     }
 
     ngOnInit(): void {
@@ -24,6 +27,7 @@ export class AnnotateComponent implements OnInit {
         this.sequence = new Sequence();
         if (this.query)
             this.sequence.sequence = this.query.blastQuery.sequence;
+
         this.selectedFeatures = [];
 
         // fetch matching annotations
@@ -31,6 +35,39 @@ export class AnnotateComponent implements OnInit {
             this.sequence.sequence = this.query.blastQuery.sequence;
             this.features = result;
         })
+
+        this.showSequenceVisualization();
+    }
+
+    showSequenceVisualization(): void {
+        this.data = {
+            sequenceData: {
+                sequence: this.sequence.sequence,
+                features: this.vectorEditor.convertFeaturesToTSModel(this.sequence.features),
+                name: this.sequence.name ? this.sequence.name : '',
+                circular: true,
+            }
+        };
+
+        let root = 'annotation-preview-root';
+        this.editor = (window as any).createVectorEditor(document.getElementById(root), {
+            readOnly: true,
+            doNotUseAbsolutePosition: true,
+            showMenuBar: true,
+            PropertiesProps: {propertiesList: this.vectorEditor.propertiesList()},
+            ToolBarProps: {toolList: this.vectorEditor.toolList()}
+        });
+
+        this.editor.updateEditor({
+            readOnly: true,
+            sequenceData: this.data.sequenceData,
+            annotationVisibility: {parts: false, orfs: false, cutsites: false, translations: false},
+            panelsShown: this.vectorEditor.panelsList(),
+            selectionLayer: {
+                start: -1,
+                end: -1
+            },
+        });
     }
 
     isSelected(feature: any): boolean {
@@ -47,6 +84,10 @@ export class AnnotateComponent implements OnInit {
 
         // this is to trigger the onChange on the visualization component
         this.selectedFeatures = Object.assign([], this.selectedFeatures);
-        // todo : add to features
+        this.data.sequenceData.features = this.vectorEditor.convertFeaturesToTSModel(this.selectedFeatures);
+        this.editor.updateEditor({
+            sequenceData: this.data.sequenceData,
+        });
+        // gtcacactggctcaccttcgggtgggcctttctgcgtttatatccctatcagtgatagagattgacatccctatcagtgatagagatactgagcactactagagtcacacaggaaagtactagatggtgagcaagggcgaggagctgttcaccggggtggtgcccatcctggtcgagctggacggcgacgtaaacggccacaagttcagcgtgtccggcgagggcgagggcgatgccacctacggcaagctgaccctgaagttcatctgcaccaccggcaagctgcccgtgccctggcccaccctcgtgaccaccttcggctacggcctgcaatgcttcgcccgctaccccgaccacatgaagctgcacgacttcttcaagtccgccatgcccgaaggctacgtccaggagcgcaccatcttcttcaaggacgacggcaactacaagacccgcgccgaggtgaagttcgagggcgacaccctggtgaaccgcatcgagctgaagggcatcgacttcaaggaggacggcaacatcctggggcacaagctggagtacaactacaacagccacaacgtctatatcatggccgacaagcagaagaacggcatcaaggtgaacttcaagatccgccacaacatcgaggacggcagcgtgcagctcgccgaccactaccagcagaacacccccatcggcgacggccccgtgctgctgcccgacaaccactacctgagctaccagtccgccctgagcaaagaccccaacgagaagcgcgatcacatggtcctgctggagttcgtgaccgccgccgggatcactctcggcatggacgagctgtacaagtaataa
     }
 }

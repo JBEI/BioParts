@@ -6,7 +6,7 @@ export class Sequence {
     genbankStartBP: number;
     endBP: number;
     name: string;
-    features: any[];
+    features = [];
     iceEntryURI?: string;
     sequence: string;
 

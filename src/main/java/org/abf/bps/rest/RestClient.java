@@ -62,8 +62,8 @@ public class RestClient {
     }
 
     protected void setHeaders(Invocation.Builder invocationBuilder) {
-        invocationBuilder.header("X-ICE-API-Token", Constants.PUBLIC_REGISTRY_TOKEN);
-        invocationBuilder.header("X-ICE-API-Token-Client", Constants.PUBLIC_REGISTRY_TOKEN_CLIENT);
-        invocationBuilder.header("X-ICE-API-Token-Owner", Constants.PUBLIC_REGISTRY_TOKEN_OWNER);
+        invocationBuilder.header("X-ICE-API-Token", Constants.REGISTRY_TOKEN);
+        invocationBuilder.header("X-ICE-API-Token-Client", Constants.REGISTRY_TOKEN_CLIENT);
+        invocationBuilder.header("X-ICE-API-Token-Owner", Constants.REGISTRY_TOKEN_OWNER);
     }
 }
