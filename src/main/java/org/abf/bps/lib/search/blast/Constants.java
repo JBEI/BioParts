@@ -25,4 +25,6 @@ public class Constants {
     public static final String NCBI_SEARCH_URL = "https://www.ncbi.nlm.nih.gov/search/api/sequence"; ///AC163214/?report=fasta
 
     public static final String MASTER_REGISTRY_URL = "registry.jbei.org";
+
+    public static final String SYNBIO_HUB_URL = "https://synbiohub.org";
 }
