@@ -19,6 +19,9 @@ import {OptionsFieldComponent} from "./components/parts/widgets/options-field/op
 import {WithEmailFieldComponent} from "./components/parts/widgets/with-email-field/with-email-field.component";
 import {AutoCompleteFieldComponent} from "./components/parts/widgets/auto-complete-field/auto-complete-field.component";
 import {LoginComponent} from "./components/login/login.component";
+import {CommentComponent} from './components/parts/part-details/comment/comment.component';
+import {ExperimentsComponent} from './components/parts/part-details/experiments/experiments.component';
+import {AttachmentsComponent} from './components/parts/part-details/attachments/attachments.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +39,10 @@ import {LoginComponent} from "./components/login/login.component";
         OptionsFieldComponent,
         WithEmailFieldComponent,
         AutoCompleteFieldComponent,
-        LoginComponent
+        LoginComponent,
+        CommentComponent,
+        ExperimentsComponent,
+        AttachmentsComponent
     ],
     imports: [
         BrowserModule,

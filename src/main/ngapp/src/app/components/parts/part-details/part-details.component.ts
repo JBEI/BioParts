@@ -15,7 +15,9 @@ export class PartDetailsComponent implements OnInit {
     partSequence: PartWithSequence;
     selection: string;
     active: number;
-    details: boolean;
+    showComments: boolean;
+    showExperiments: boolean;
+    showAttachments: boolean;
     query: SearchQuery;
 
     constructor(private http: HttpService, private route: ActivatedRoute, private searchService: SearchService) {
@@ -34,12 +36,23 @@ export class PartDetailsComponent implements OnInit {
         // });
 
         this.selection = 'general';
-        this.details = false;
+        this.showComments = false;
+        this.showExperiments = false;
+        this.showAttachments = false;
         this.query = this.searchService.getQuery();
     }
 
-    showDetails(): void {
-        this.details = true;
+    showSideBar(comments: boolean, experiments: boolean, attachments: boolean): void {
+        this.showComments = false;
+        this.showExperiments = false;
+        this.showAttachments = false;
+
+        if (comments)
+            this.showComments = true;
+        else if (experiments)
+            this.showExperiments = true;
+        else if (attachments)
+            this.showAttachments = true;
     }
 
     backTo(): void {

@@ -46,6 +46,13 @@ public class Parts {
                 return new PartSequence(partData, sequence);
             }
 
+            if (partnerUrl.equalsIgnoreCase(Constants.SYNBIO_HUB_URL)) {
+                SynbioHubPart part = new SynbioHubPart();
+                part.setUri(partnerUrl);
+                part.setName(searchResult.getEntryInfo().getName());
+                return new SBOLHubParts().get(part);
+            }
+
             PartData data = RestClient.getInstance().get(Constants.MASTER_REGISTRY_URL, "/rest/web/"
                 + searchResult.getPartner().getId()
                 + "/entries/" + searchResult.getEntryInfo().getId(), PartData.class, null);

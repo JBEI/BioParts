@@ -74,25 +74,33 @@
 
         <div class="mt-5 text-center text-uppercase font-weight-bold"
              style="position: absolute; top: 120px; right: 0; height: 400px">
-            <ul class="list-group" *ngIf="!details">
+            <ul class="list-group" *ngIf="!showAttachments && !showComments && !showExperiments">
                 <li class="list-group-item right-nav list-group-item-action cursor-pointer p-3"
-                    ngbTooltip="Comments" (click)="showDetails()">
+                    ngbTooltip="Comments" (click)="showSideBar(true, false, false)">
                     <i class="fa fa-fw fa-comments-o font-12em"></i>
                 </li>
-                <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Experiments">
+                <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Experiments"
+                    (click)="showSideBar(false, true, false)">
                     <i class="fa fa-fw fa-database font-12em"></i>
                 </li>
-                <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Attachments">
+                <li class="list-group-item list-group-item-action right-nav p-3" ngbTooltip="Attachments"
+                    (click)="showSideBar(false, false, true)">
                     <i class="fa fa-fw fa-file font-12em"></i>
                 </li>
             </ul>
         </div>
 
-        <div class="mt-5 border-left p-2 shadow-sm text-nowrap border-top" *ngIf="details"
+        <div class="mt-5 border-left p-2 shadow-sm text-nowrap border-top"
+             *ngIf="showComments || showAttachments || showExperiments"
              style="position: absolute; top: 120px; right: 0; height: 400px">
             <div class="border-bottom">
-                <span class="cursor-pointer" (click)="details =!details">Back</span> content goes here
+                <span class="cursor-pointer font-85em" (click)="showSideBar(false, false, false)"><i
+                    class="fa fa-fw fa-chevron-left"></i> Back</span>
             </div>
+
+            <app-comment *ngIf="showComments"></app-comment>
+            <app-attachments *ngIf="showAttachments"></app-attachments>
+            <app-experiments *ngIf="showExperiments"></app-experiments>
         </div>
     </div>
 
