@@ -46,10 +46,11 @@ public class Parts {
                 return new PartSequence(partData, sequence);
             }
 
-            if (partnerUrl.equalsIgnoreCase(Constants.SYNBIO_HUB_URL)) {
+            if (partnerUrl.startsWith(Constants.SYNBIO_HUB_URL)) {
                 SynbioHubPart part = new SynbioHubPart();
                 part.setUri(partnerUrl);
                 part.setName(searchResult.getEntryInfo().getName());
+                part.setDescription(searchResult.getEntryInfo().getShortDescription());
                 return new SBOLHubParts().get(part);
             }
 
