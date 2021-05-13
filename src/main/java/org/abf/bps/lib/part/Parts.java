@@ -47,11 +47,7 @@ public class Parts {
             }
 
             if (partnerUrl.startsWith(Constants.SYNBIO_HUB_URL)) {
-                SynbioHubPart part = new SynbioHubPart();
-                part.setUri(partnerUrl);
-                part.setName(searchResult.getEntryInfo().getName());
-                part.setDescription(searchResult.getEntryInfo().getShortDescription());
-                return new SBOLHubParts().get(part);
+                return new SBOLHubParts().get(partnerUrl, recordId);
             }
 
             PartData data = RestClient.getInstance().get(Constants.MASTER_REGISTRY_URL, "/rest/web/"

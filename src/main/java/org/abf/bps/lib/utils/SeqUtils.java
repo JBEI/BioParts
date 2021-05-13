@@ -5,6 +5,7 @@ import org.abf.bps.lib.dto.DNAFeature;
 import org.abf.bps.lib.dto.DNAFeatureLocation;
 import org.abf.bps.lib.dto.DNAFeatureNote;
 import org.abf.bps.lib.dto.FeaturedDNASequence;
+import org.apache.commons.lang3.StringUtils;
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.features.FeatureInterface;
@@ -66,6 +67,10 @@ public class SeqUtils {
                 List<Qualifier> list = qualifiers.get(key);
                 if (list != null) {
                     for (Qualifier qualifier : list) {
+                        if ("label".equalsIgnoreCase(qualifier.getName()) && StringUtils.isBlank(dnaFeature.getName()))
+                            dnaFeature.setName(qualifier.getValue());
+
+                        // todo : else ??
                         DNAFeatureNote note = new DNAFeatureNote(qualifier.getName(), qualifier.getValue());
                         note.setQuoted(qualifier.needsQuotes());
                         dnaFeature.getNotes().add(note);
