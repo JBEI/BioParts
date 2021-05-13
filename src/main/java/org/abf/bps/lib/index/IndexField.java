@@ -11,6 +11,7 @@ public enum IndexField {
     NAME,
     SUMMARY,
     CREATED,
+    REFERENCES,
 
     ALIAS,
     KEYWORDS,

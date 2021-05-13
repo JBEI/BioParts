@@ -140,8 +140,10 @@ public class SearchIndex {
                 builder.add(new TermQuery(new Term(IndexField.NAME.toString(), queryString)), BooleanClause.Occur.SHOULD);
                 builder.add(new TermQuery(new Term(IndexField.ALIAS.toString(), queryString)), BooleanClause.Occur.SHOULD);
                 builder.add(new TermQuery(new Term(IndexField.KEYWORDS.toString(), queryString)), BooleanClause.Occur.SHOULD);
+                builder.add(new TermQuery(new Term(IndexField.REFERENCES.toString(), queryString)), BooleanClause.Occur.SHOULD);
+                builder.add(new TermQuery(new Term(IndexField.SOURCE_URL.toString(), queryString)), BooleanClause.Occur.SHOULD);
+                builder.add(new TermQuery(new Term(IndexField.SOURCE_NAME.toString(), queryString)), BooleanClause.Occur.SHOULD);
                 builder.add(new TermQuery(new Term(IndexField.PART_ID.toString(), queryString)), BooleanClause.Occur.SHOULD);
-                builder.add(new TermQuery(new Term(IndexField.SUMMARY.toString(), queryString)), BooleanClause.Occur.SHOULD);
                 builder.add(new TermQuery(new Term(IndexField.SUMMARY + "_token", queryString)), BooleanClause.Occur.SHOULD);
                 builder.add(new TermQuery(new Term(IndexField.NAME + "_token", queryString)), BooleanClause.Occur.SHOULD);
             }
