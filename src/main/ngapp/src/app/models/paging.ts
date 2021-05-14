@@ -16,13 +16,13 @@ export class Paging {
 
     constructor() {
         this.currentPage = 1;
-        this.available = 0;
-        this.retrieveCount = 30;
+        this.available = 0;         // number of items available
+        this.retrieveCount = 30;    // maximum number of items to retrieve
         this.start = 0;
         this.filterText = '';
         this.processing = false;
         this.sort = 'id';
         this.asc = false;
-        this.pageSize = 5;
+        this.pageSize = 15;         // number of items per page
     }
 }
