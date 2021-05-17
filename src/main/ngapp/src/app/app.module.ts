@@ -8,7 +8,6 @@ import {SearchComponent} from './components/search/search.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
-import {TextResultsComponent} from './components/search/text-results/text-results.component';
 import {AnnotateComponent} from './components/annotate/annotate.component';
 import {HeaderComponent} from "./components/header/header.component";
 import {SearchBarComponent} from "./components/search/search-bar/search-bar.component";
@@ -29,7 +28,6 @@ import {AttachmentsComponent} from './components/parts/part-details/attachments/
         MainComponent,
         SearchComponent,
         HeaderComponent,
-        TextResultsComponent,
         SequenceComponent,
         AnnotateComponent,
         HeaderComponent,

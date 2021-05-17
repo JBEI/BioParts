@@ -6,4 +6,5 @@ export class PartWithSequence {
     part: Part;
     sequence: Sequence;
     partSource: PartSource;
+    children: PartWithSequence[];
 }

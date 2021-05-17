@@ -22,11 +22,13 @@ export class SequenceComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.sequence);
         if (this.part) {
             this.http.get('search/' + this.part.recordId).subscribe((result: PartWithSequence) => {
                 console.log(result);
                 if (!result.sequence.name)
                     result.sequence.name = this.part.name;
+
                 this.showSequenceVisualization(result.sequence)
             })
         } else {
@@ -44,8 +46,9 @@ export class SequenceComponent implements OnInit {
             }
         };
 
-        console.log(this.data);
-
+        if (this.data.sequenceData.name === '.' || !this.data.sequenceData.name) {
+            this.data.sequenceData.name = this.part.name;
+        }
         let root = 'preview-root';
         this.editor = (window as any).createVectorEditor(document.getElementById(root), {
             readOnly: true,

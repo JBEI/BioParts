@@ -1,6 +1,6 @@
 <div style="margin-right: 85px;">
 
-<!--    <pre> {{partSequence.part | json}}</pre>-->
+    <!--    <pre> {{partSequence.part | json}}</pre>-->
 
     <small class="text-muted">Summary</small>
     <br>
@@ -54,20 +54,26 @@
     </div>
 </div>
 
-<div *ngIf="partSequence.part.linkedParts.length">
+<!--<pre>{{partSequence.children | json}}</pre>-->
+
+<div *ngIf="partSequence.children.length">
     <div class="border-bottom sub-section pt-4" style="margin-right: 85px">
         <strong class="pb-3">CONTAINS</strong>
     </div>
 
-    <div class="d-flex pt-3">
-        <div *ngFor="let linkedPart of partSequence.part.linkedParts" class="card shadow-sm w-25 font-90em bg-light">
+    <div class="pt-3 row">
+        <div *ngFor="let linkedPart of partSequence.children"
+             class="card shadow-sm w-25 font-90em bg-light ml-4 mb-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div>{{linkedPart.name}}</div>
-                    <div><a [href]="'/part/' + linkedPart.recordId">{{linkedPart.partId}}</a></div>
+                    <div>{{linkedPart.part.type}} {{linkedPart.sequence.identifier}}</div>
+                    <div><a [href]="'/part/' + linkedPart.part.recordId">{{linkedPart.part.partId}}</a></div>
+                    <div class="pull-right">{{linkedPart.sequence.date}}</div>
                 </div>
 
-                <div class="mt-2">{{linkedPart.shortDescription}}</div>
+                <pre> {{linkedPart | json}}</pre>
+                <pre>{{linkedPart.sequence.sequence}}</pre>
+                <div class="mt-2">{{linkedPart.part.shortDescription}}</div>
             </div>
         </div>
     </div>

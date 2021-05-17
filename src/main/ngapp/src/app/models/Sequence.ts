@@ -9,6 +9,8 @@ export class Sequence {
     features = [];
     iceEntryURI?: string;
     sequence: string;
+    identifier: string;
+    date: string;
 
     constructor() {
         this.features = [];

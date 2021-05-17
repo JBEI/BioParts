@@ -99,6 +99,10 @@ export class PartGeneralInformationComponent implements OnInit {
                 this.shortFields.push(partField);
             }
         }
+
+        if (this.partSequence.sequence) {
+            this.showSequenceVisualization(this.partSequence.sequence);
+        }
     }
 
     showSequenceVisualization(sequence: Sequence): void {
@@ -111,7 +115,7 @@ export class PartGeneralInformationComponent implements OnInit {
             }
         };
 
-        this.editor = (window as any).createVectorEditor(document.getElementById('part-preview-root'), {
+        this.editor = (window as any).createVectorEditor(document.getElementById('sequence-preview-root'), {
             readOnly: true,
             doNotUseAbsolutePosition: true,
             onSelectionOrCaretChanged: (selection) => {
@@ -138,4 +142,5 @@ export class PartGeneralInformationComponent implements OnInit {
             },
         });
     }
+
 }

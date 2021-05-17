@@ -32,9 +32,7 @@ public class Parts {
             }
 
             if (partnerUrl.startsWith(Constants.ADDGENE_URL_PREFIX)) {
-                PartSequence sequence = new AddGeneParts().retrievePlasmid(searchResult.getEntryInfo().getPartId());
-                sequence.getPart().setRecordId(searchResult.getEntryInfo().getRecordId());
-                return sequence;
+                return new AddGeneParts().retrievePlasmid(searchResult.getEntryInfo());
             }
 
             if (partnerUrl.equalsIgnoreCase(Constants.MASTER_REGISTRY_URL)) {

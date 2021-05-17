@@ -90,7 +90,8 @@ public class AddGeneParts {
 
                 // see if there are any partial sequences
                 Elements elements = doc.select("section#addgene-partial ul.addgene-nav-list");
-                for (Element partialElement : elements) {
+
+                for (Element partialElement : elements) { // each element contains a link
                     List<Node> partials = partialElement.childNodes();
 
                     for (Node node : partials) {
@@ -98,40 +99,46 @@ public class AddGeneParts {
                             continue;
 
                         if ("genbank".equalsIgnoreCase(((Element) node).text())) {
-                            List<Node> childNodes = node.childNodes();
-                            for (Node childNode : childNodes) {
-                                String url = childNode.attr("href");
-                                if (StringUtils.isEmpty(url))
-                                    continue;
+                            try {
+                                String href = ((Element) node).select("li a").attr("href");
+                                if (StringUtils.isEmpty(href))
+                                    break;
 
                                 // download file for each child
-                                FeaturedDNASequence sequence = parseRemoteSequence(url);
+                                System.out.println("Processing URL: " + href);
+                                FeaturedDNASequence sequence = parseRemoteSequence(href);
 
                                 // set children
-                                if (sequence != null) {
-                                    PartData child = new PartData(EntryType.PART);
-                                    child.setRecordId(UUID.randomUUID().toString());
-
-                                    if (!StringUtils.isEmpty(sequence.getDate())) {
-                                        try {
-                                            child.setCreationTime(new SimpleDateFormat("dd-MMM-yyyy").parse(sequence.getDate()).getTime());
-                                        } catch (Exception e) {
-                                            Logger.error(e);
-                                        }
-                                    }
-
-                                    String description = sequence.getDescription().replaceAll("\r\n", "");
-                                    sequence.setDescription(description);
-                                    child.setShortDescription(description);
-                                    child.setName(sequence.getName());
-
-                                    PartSequence childSequence = new PartSequence();
-                                    childSequence.setPart(child);
-                                    childSequence.setSequence(sequence);
-                                    plasmid.getChildren().add(childSequence);
+                                if (sequence == null) {
+                                    break;
                                 }
+
+                                PartData child = new PartData(EntryType.PART);
+                                child.setRecordId(UUID.randomUUID().toString());
+
+                                if (!StringUtils.isEmpty(sequence.getDate())) {
+                                    try {
+                                        child.setCreationTime(new SimpleDateFormat("dd-MMM-yyyy").parse(sequence.getDate()).getTime());
+                                    } catch (Exception e) {
+                                        Logger.error(e);
+                                    }
+                                }
+
+                                String description = sequence.getDescription().replaceAll("\r\n", "");
+                                sequence.setDescription(description);
+                                child.setShortDescription(description);
+                                child.setName(sequence.getName());
+
+                                PartSequence childSequence = new PartSequence();
+                                childSequence.setPart(child);
+                                childSequence.setSequence(sequence);
+                                plasmid.getChildren().add(childSequence);
+                                break;
+
+                            } catch (Exception e) {
+                                //
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -141,12 +148,9 @@ public class AddGeneParts {
         }
     }
 
-    public PartSequence retrievePlasmid(String plasmidId) {
+    public PartSequence retrievePlasmid(PartData partData) {
         try {
-            plasmidId = plasmidId.trim();
-            PartData partData = new PartData(EntryType.PLASMID);
-            partData.setPartId(plasmidId);
-            partData.setRecordId(UUID.randomUUID().toString());
+            final String plasmidId = partData.getPartId();
             partData.setHasSample(true);
             PartSequence partSequence = new PartSequence();
             final String partUrl = "https://www.addgene.org/" + plasmidId.trim() + "/";
@@ -235,7 +239,7 @@ public class AddGeneParts {
             partData.setReferences(references);
             return partSequence;
         } catch (Exception e) {
-            Logger.error("Exception indexing addgene " + plasmidId, e);
+            Logger.error("Exception indexing addgene part: " + partData.getPartId(), e);
             return null;
         }
     }

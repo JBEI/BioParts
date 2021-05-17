@@ -2,7 +2,7 @@
 
 <br>
 
-<div class="container-fluid" style="margin-top: 45px">
+<div class="container-fluid" style="margin-top: 48px">
     <div *ngIf='loadingSearchResults' class="p-4 text-muted font-italic font-11em">
         <img src="assets/img/loader-mini.gif" alt="">
     </div>
@@ -15,7 +15,7 @@
         <div class="row">
             <table class="table table-hover"
                    [ngClass]="{'opacity-4':loadingSearchResults, 'border-bottom': searchResults && searchResults.resultCount}">
-                <thead class="bg-light">
+                <thead class="bg-light text-black-50">
                 <tr>
                     <th (click)="sortResults('type')" class="cursor-pointer">
                         <span>TYPE</span>&nbsp;
@@ -41,7 +41,7 @@
                     <th style=" width:230px"><span>SOURCE</span></th>
                     <th style="width:100px;">
                         <i class="fa fa-flask fa-fw"></i>
-                        <img src="assets/img/dna.svg" width="15px" alt="has dna"/>
+                        <img src="assets/img/dna.svg" style="opacity: 0.5%" width="15px" alt="has dna"/>
                     </th>
                     <th (click)="sortResults('created')" class="cursor-pointer" style="width: 120px">
                         <span>CREATED</span>&nbsp;
@@ -70,7 +70,7 @@
                             {{result.entryInfo.shortDescription}}
                         </div>
                     </td>
-                    <td class="text-nowrap">
+                    <td class="text-nowrap text-capitalize">
                         <a [href]="result.partner.url" target="_blank">{{result.partner.name}}</a>
                     </td>
                     <td>
@@ -90,7 +90,9 @@
     <div class="row align-content-md-center" style="text-align: center"
          *ngIf="searchResults && searchResults.resultCount && !loadingSearchResults">
         <div class="col-4">
-            <ngb-pagination [collectionSize]="query.parameters.available" [(page)]="query.parameters.currentPage"
+            <ngb-pagination [collectionSize]="query.parameters.available"
+                            [boundaryLinks]="true"
+                            [(page)]="query.parameters.currentPage"
                             [pageSize]="query.parameters.pageSize" [maxSize]="5"
                             (pageChange)="searchResultPageChanged()"
                             [disabled]="query.parameters.available <= query.parameters.retrieveCount"></ngb-pagination>

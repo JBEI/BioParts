@@ -9,9 +9,9 @@ import org.abf.bps.lib.dto.search.SearchResult;
 import org.abf.bps.lib.dto.search.SearchResults;
 import org.abf.bps.lib.index.RemoteGenBankPart;
 import org.abf.bps.lib.index.SearchIndex;
+import org.abf.bps.lib.part.AddGeneParts;
 import org.abf.bps.lib.part.IgemParts;
 import org.abf.bps.lib.part.Parts;
-import org.abf.bps.lib.part.AddGeneParts;
 import org.abf.bps.lib.search.blast.Constants;
 
 import javax.ws.rs.*;
@@ -57,7 +57,7 @@ public class SearchResource extends RestResource {
             }
 
             if (url.startsWith(Constants.ADDGENE_URL_PREFIX)) {
-                PartSequence sequence = new AddGeneParts().retrievePlasmid(searchResult.getEntryInfo().getPartId());
+                PartSequence sequence = new AddGeneParts().retrievePlasmid(searchResult.getEntryInfo());
                 return super.respond(sequence.getSequence());
             }
 
