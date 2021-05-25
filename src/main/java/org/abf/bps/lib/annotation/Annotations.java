@@ -8,6 +8,7 @@ import org.abf.bps.lib.dto.DNAFeatureLocation;
 import org.abf.bps.lib.dto.search.BlastQuery;
 import org.abf.bps.lib.search.blast.BlastException;
 import org.abf.bps.lib.search.blast.BlastSearch;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,14 +20,6 @@ public class Annotations {
 
     private static final String DB_NAME = "annotations";
 
-    public static void main(String[] args) throws Exception {
-        BlastQuery query = new BlastQuery();
-        query.setSequence("taacaccgtgcgtgttgactattttacctctggcggtgataatggttgctactagagtcacacaggaaagtactagatgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataacactgatagtgctagtgtagatcactactagagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata");
-        Annotations annotations = new Annotations();
-        List<DNAFeature> features = annotations.runBlast(query);
-        System.out.println(features.size());
-    }
-
     /**
      * Run a blast query against the sequence features blast database.
      *
@@ -34,9 +27,11 @@ public class Annotations {
      * @return list of DNA features that match the query according to the parameters
      * @throws BlastException on null result or exception processing the result
      */
-    public List<DNAFeature> runBlast(BlastQuery query) throws BlastException {   // todo add e-value
+    public List<DNAFeature> runBlast(BlastQuery query, String perc_identity) throws BlastException {   // todo add e-value
         BlastSearch blastSearch = new BlastSearch(AnnotationsBlastFile.indexPath(), DB_NAME);
-        String result = blastSearch.run(query, "-perc_identity", "100",
+        if (StringUtils.isBlank(perc_identity))
+            perc_identity = "100";
+        String result = blastSearch.run(query, "-perc_identity", perc_identity,
             "-outfmt", "10 stitle qstart qend sstart send sstrand");
         if (result == null)
             throw new BlastException("Exception running blast");
