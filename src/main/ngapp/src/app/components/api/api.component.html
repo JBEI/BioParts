@@ -1,0 +1,121 @@
+<div class="d-flex justify-content-between align-items-center p-2" style="background-color: #00175b">
+    <div class="w-100">
+        <button class="btn btn-outline-light font-11em" (click)="goHome()">BPS</button>
+        <h5 class="float-right text-white pt-1 pr-2">API Documentation</h5>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+
+        <div class="col-3 bg-light">
+            <div class="p-3">
+                <h3>API Reference</h3>
+                <br><br>
+                <h5 (click)="select('annotations')"
+                    [ngClass]="{'opacity_hover': selection !== 'annotations'}">Annotations <i
+                    class="fa fa-fw float-right"
+                    [ngClass]="{'fa-caret-right': selection !== 'annotations', 'fa-caret-down': selection === 'annotations'}"></i>
+                </h5>
+                <p class="pl-3" *ngIf="selection === 'annotations'"><span class="badge badge-primary p-2">POST</span>
+                    &nbsp; <span class="opacity_hover"
+                                 (click)="scroll('annotations_query_div')">Run annotations query</span>
+                </p>
+
+                <h5 class="opacity_hover" (click)="select('search')">Search <i
+                    class="fa fa-fw float-right text-muted"
+                    [ngClass]="{'fa-caret-right': selection !== 'search', 'fa-caret-down': selection === 'search'}"></i>
+                </h5>
+            </div>
+        </div>
+
+        <div class="col-9 p-3">
+            <h3 class="font-weight-bold">{{selection | titlecase}}</h3><br><br>
+
+            <div *ngIf="selection==='search'">
+                <span class="text-muted font-italic">Coming soon</span>
+            </div>
+
+            <div *ngIf="selection==='annotations'">
+                <h4 #annotations_query_div>Run annotations query</h4>
+                <p>Submit a reference sequence and retrieve a list of annotations that can be applied to it.</p>
+                <table class="table table-bordered">
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>
+                            Method
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <code>POST</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>URL</td>
+                    <tr>
+                        <td>
+                            <code>bioparts.org/rest/annotations</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Query Parameters</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Required:</b> <br>
+                            <ul>
+                                <li>
+                                    <code>query=[object]</code><br>
+                                    Reference sequence. <br>
+                                    <span class="example">example</span>: <kbd class="small">query={{'{'}}sequence:
+                                    'atcggcattaata'}</kbd>
+                                </li>
+                            </ul>
+
+                            <br>
+
+                            <b>Optional:</b> <br>
+                            <ul>
+                                <li>
+                                    <code>perc_match=[percentage]</code> <i class="small text-muted">default=100</i><br>
+                                    Percentage of basis of the matching annotations that are identical to the reference
+                                    sequence. Range of 0-100.<br>
+                                    <span class="example">example</span>: <kbd class="small">perc_match=75</kbd>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Response object</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>A list, with each object in the list representing a matching annotation with the location
+                                of the match</p>
+                            <pre>[
+                                {{'{'}}
+                                name: '',
+        type: '',
+        location: [{{'{'}}
+                                genbankStart: ,
+            end:
+        }],
+        strand:
+    }
+]</pre>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>EXAMPLE</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>curl -X POST
+                            -H "Content-Type: application/json"
+                            -d "{{'{'}}sequence: atgcacagacagacagaaga}"
+                            https://bioparts.org/rest/annotations?perc_match=75</kbd></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,6 +21,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {CommentComponent} from './components/parts/part-details/comment/comment.component';
 import {ExperimentsComponent} from './components/parts/part-details/experiments/experiments.component';
 import {AttachmentsComponent} from './components/parts/part-details/attachments/attachments.component';
+import {ApiComponent} from './components/api/api.component';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import {AttachmentsComponent} from './components/parts/part-details/attachments/
         LoginComponent,
         CommentComponent,
         ExperimentsComponent,
-        AttachmentsComponent
+        AttachmentsComponent,
+        ApiComponent
     ],
     imports: [
         BrowserModule,
