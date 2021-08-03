@@ -25,8 +25,7 @@ export class SequenceComponent implements OnInit {
         console.log(this.sequence);
         if (this.part) {
             this.http.get('search/' + this.part.recordId).subscribe((result: PartWithSequence) => {
-                console.log(result);
-                if (!result.sequence.name)
+                if (result.sequence && !result.sequence.name)
                     result.sequence.name = this.part.name;
 
                 this.showSequenceVisualization(result.sequence)
