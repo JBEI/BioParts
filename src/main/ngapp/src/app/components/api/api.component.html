@@ -82,9 +82,9 @@
                             <ul>
                                 <li>
                                     <code>query=[object]</code><br>
-                                    Search query details. <br>
+                                    Search query details. This includes optional information for paging.<br>
                                     <span class="example">Text search example</span>: <kbd class="small">query={{'{'}}queryString:
-                                    'gfp'}</kbd>
+                                    'gfp', parameters: {{'{'}} retrieveCount: {{'<'}}integer>, start: {{'<'}}integer> }</kbd>
                                     <br>
                                     <span class="example">Sequence search example</span>: <kbd class="small">query={{'{'}}blastQuery:
                                     {{'{'}}sequence: 'atcggcattaata'}}</kbd>
