@@ -27,7 +27,6 @@ export class ApiComponent implements OnInit {
 
     scroll(id: string) {
         const el = document.getElementById(id);
-        //
         el.scrollIntoView();
     }
 }

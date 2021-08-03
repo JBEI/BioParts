@@ -8,7 +8,7 @@
 <div>
     <div class="row">
 
-        <div class="col-3 bg-light">
+        <div class="col-3 bg-light border-right">
             <div class="p-3">
                 <h3>API Reference</h3>
                 <br><br>
@@ -26,6 +26,25 @@
                     class="fa fa-fw float-right text-muted"
                     [ngClass]="{'fa-caret-right': selection !== 'search', 'fa-caret-down': selection === 'search'}"></i>
                 </h5>
+
+                <div *ngIf="selection === 'search'">
+                    <p class="pl-3"><span class="badge badge-primary p-2">POST</span>
+                        &nbsp; <span class="opacity_hover"
+                                     (click)="scroll('run_search_div')">Run search</span>
+                    </p>
+                    <p class="pl-3"><span class="badge badge-info p-2">GET</span>
+                        &nbsp; <span class="opacity_hover"
+                                     (click)="scroll('get_part_information_div')">Get part information</span>
+                    </p>
+                    <p class="pl-3"><span class="badge badge-info p-2">GET</span>
+                        &nbsp; <span class="opacity_hover"
+                                     (click)="scroll('get_part_sequence_div')">Get part sequence</span>
+                    </p>
+<!--                    <p class="pl-3"><span class="badge badge-primary p-2">POST</span>-->
+<!--                        &nbsp; <span class="opacity_hover"-->
+<!--                                     (click)="scroll('annotations_query_div')">Add your registry</span>-->
+<!--                    </p>-->
+                </div>
             </div>
         </div>
 
@@ -33,11 +52,208 @@
             <h3 class="font-weight-bold">{{selection | titlecase}}</h3><br><br>
 
             <div *ngIf="selection==='search'">
-                <span class="text-muted font-italic">Coming soon</span>
+
+                <h4 id="run_search_div">Run Search</h4>
+                <p class="text-muted">Submit search query and retrieve list of matching results</p>
+                <table class="table table-bordered pb-5">
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>
+                            Method
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <code>POST</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>URL</td>
+                    <tr>
+                        <td>
+                            <code>bioparts.org/rest/search</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Query Parameters</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Required:</b> <br>
+                            <ul>
+                                <li>
+                                    <code>query=[object]</code><br>
+                                    Search query details. <br>
+                                    <span class="example">Text search example</span>: <kbd class="small">query={{'{'}}queryString:
+                                    'gfp'}</kbd>
+                                    <br>
+                                    <span class="example">Sequence search example</span>: <kbd class="small">query={{'{'}}blastQuery:
+                                    {{'{'}}sequence: 'atcggcattaata'}}</kbd>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Response object</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Wrapper around a list of results and the available count</p>
+                            <pre>
+{{'{'}}
+    resultCount: ,
+    results: [
+                {{'{'}}
+                    eValue: '',
+                    alignment: '',
+                    queryLength: ,
+                    score: ,
+                    maxScore: ,
+                    matchDetails: [ '' ],
+                    entryInfo: {{'{'}} recordId: '' },
+                    partner: {{'{'}}name: '', url: ''}
+                }
+             ]
+}
+</pre>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>EXAMPLE</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>curl -X POST
+                            -H "Content-Type: application/json"
+                            -d "{{'{'}}queryString: 'gfp'}"
+                            https://bioparts.org/rest/search</kbd>
+                        </td>
+                    </tr>
+                </table>
+
+                <br><br><br><br><br><br>
+
+                <h4 id="get_part_information_div" class="pt-5">Get part information</h4>
+                <p class="text-muted">Retrieve information about a biological part. Requires the record id (typically available from search results)</p>
+                <table class="table table-bordered">
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>
+                            Method
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <code>GET</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>URL</td>
+                    <tr>
+                        <td>
+                            <code>bioparts.org/rest/search/:partId</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Query Parameters</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Required:</b> <br>
+                            <code class="ml-4">partId=[string]</code><br>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Response object</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Wrapper around part information, source and any additional hierarchical information</p>
+                            <pre>
+{{'{'}}
+    part: {{'{'}}},
+    partSource: {{'{'}}url: '', name: ''},
+    children: [{{'{'}} }]
+}
+</pre>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>EXAMPLE</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>curl -X GET
+                            -H "Content-Type: application/json"
+                            https://bioparts.org/rest/search/123e4567-e89b-12d3-a456-426614174000</kbd>
+                        </td>
+                    </tr>
+                </table>
+
+                <h4 id="get_part_sequence_div" class="pt-5">Get part sequence</h4>
+                <p class="text-muted">Retrieve sequence information about a biological part. Requires the record id (typically available from search results)</p>
+                <table class="table table-bordered">
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>
+                            Method
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <code>GET</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>URL</td>
+                    <tr>
+                        <td>
+                            <code>bioparts.org/rest/search/:partId/sequence</code>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Query Parameters</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Required:</b> <br>
+                            <code class="ml-4">partId=[string]</code><br>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>Response object</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Part sequence information, if available</p>
+                            <pre>
+{{'{'}}
+    features: [{{'{'}}
+                    type: '',
+                    name: '',
+                    sequence: '',
+                    locations: [{{'{'}}
+                                    genbankStart: ,
+                                    end:
+                                }]
+              }],
+    name: '',
+    sequence: '',
+    isCircular: {{'<'}}boolean>,
+    description: ''
+}
+</pre>
+                        </td>
+                    </tr>
+                    <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
+                        <td>EXAMPLE</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>curl -X GET
+                            -H "Content-Type: application/json"
+                            https://bioparts.org/rest/search/123e4567-e89b-12d3-a456-426614174000/sequence</kbd>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <div *ngIf="selection==='annotations'">
-                <h4 #annotations_query_div>Run annotations query</h4>
+                <h4 id="annotations_query_div">Run annotations query</h4>
                 <p>Submit a reference sequence and retrieve a list of annotations that can be applied to it.</p>
                 <table class="table table-bordered">
                     <tr class="bg-secondary text-uppercase text-white border font-85em font-weight-bold">
@@ -93,13 +309,13 @@
                             <p>A list, with each object in the list representing a matching annotation with the location
                                 of the match</p>
                             <pre>[
-                                {{'{'}}
-                                name: '',
+    {{'{'}}
+        name: '',
         type: '',
         location: [{{'{'}}
-                                genbankStart: ,
-            end:
-        }],
+                    genbankStart: {{'<'}}integer>,
+                    end: {{'<'}}integer>
+                  }],
         strand:
     }
 ]</pre>
