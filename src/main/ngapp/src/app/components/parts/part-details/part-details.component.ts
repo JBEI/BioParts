@@ -15,6 +15,7 @@ export class PartDetailsComponent implements OnInit {
     partSequence: PartWithSequence;
     selection: string;
     active: number;
+    retrievingPart: boolean;
     showComments: boolean;
     showExperiments: boolean;
     showAttachments: boolean;
@@ -24,12 +25,17 @@ export class PartDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.retrievingPart = true;
         this.http.get('search/' + this.route.snapshot.params['partId']).subscribe((data: PartWithSequence) => {
             this.partSequence = data;
             this.route.params.subscribe(result => {
                 this.partSequence.part.recordId = result.partId;
             })
-        });
+            this.retrievingPart = false;
+        }, (error => {
+            console.error(error);
+            this.retrievingPart = false;
+        }));
 
         // this.route.params.subscribe((params) => {
         //     console.log('partId', params['partId'])
