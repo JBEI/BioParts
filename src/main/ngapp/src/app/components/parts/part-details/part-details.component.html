@@ -2,6 +2,10 @@
 
     <app-header></app-header>
 
+    <div class="p-4" *ngIf="retrievingPart">
+        <img src="assets/img/loader-mini.gif"/> <span class="text-muted"> Retrieving part&hellip;</span>
+    </div>
+
     <div class="col-12 p-0" [ngClass]="{'opacity-3': !partSequence}" *ngIf="partSequence">
         <div class="d-flex border-top p-3" style="background-color: #f1f5f8">
 
@@ -28,9 +32,18 @@
 
                 <small class="font-75em">
                     {{partSequence.part.creationTime | date:'medium'}}
-                    <span style="color: #ccc; width: 1px"><span class="mr-1 ml-1">|</span></span>
 
-                    {{partSequence.part.owner}}
+                    <span *ngIf="partSequence.part.owner">
+                    <span style="color: #ccc; width: 1px"><span class="mr-1 ml-1">|</span></span>
+                        {{partSequence.part.owner}}
+                    </span>
+
+                    <span *ngIf="partSequence.partSource">
+                        <span style="color: #ccc; width: 1px"><span class="mr-1 ml-1">|</span></span>
+                        <a [href]="partSequence.partSource.url">{{partSequence.partSource.name}}</a>
+                        <br>
+                    </span>
+
                 </small>
             </div>
 
@@ -58,7 +71,7 @@
                     <app-part-general-information [partSequence]="partSequence"></app-part-general-information>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="2" class="mr-3 ml-3">
+            <li [ngbNavItem]="2" class="mr-3 ml-3" [disabled]="true">
                 <a ngbNavLink>Sequence Analysis</a>
                 <ng-template ngbNavContent>
                 </ng-template>
