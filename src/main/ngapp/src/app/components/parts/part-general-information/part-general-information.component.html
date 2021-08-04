@@ -1,11 +1,8 @@
 <div style="margin-right: 85px;">
 
-    <!--    <pre> {{partSequence.part | json}}</pre>-->
-
     <small class="text-muted">Summary</small>
     <br>
     {{partSequence.part.shortDescription}}
-
     <br>
 
     <div class="bg-light mt-2 mb-2 p-3">
@@ -54,30 +51,30 @@
     </div>
 </div>
 
-<!--<pre>{{partSequence.children | json}}</pre>-->
+<!--<div *ngIf="partSequence.children.length">-->
+<!--    <div class="border-bottom sub-section pt-4" style="margin-right: 85px">-->
+<!--        <strong class="pb-3">CONTAINS</strong>-->
+<!--    </div>-->
 
-<div *ngIf="partSequence.children.length">
-    <div class="border-bottom sub-section pt-4" style="margin-right: 85px">
-        <strong class="pb-3">CONTAINS</strong>
-    </div>
+<!--    <div class="pt-3 row">-->
+<!--        <div *ngFor="let linkedPart of partSequence.children"-->
+<!--             class="card shadow-sm w-25 font-90em bg-light ml-4 mb-4">-->
+<!--            <div class="card-body">-->
+<!--                <div class="d-flex justify-content-between">-->
+<!--                    <div><span-->
+<!--                        class="font-weight-bold font-85em shadow-sm">{{linkedPart.part.type}}</span> {{linkedPart.sequence.identifier}}-->
+<!--                    </div>-->
+<!--                    <div><a [href]="'/part/' + linkedPart.part.recordId">{{linkedPart.part.partId}}</a></div>-->
+<!--                    <div class="pull-right">{{linkedPart.sequence.date}}</div>-->
+<!--                </div>-->
 
-    <div class="pt-3 row">
-        <div *ngFor="let linkedPart of partSequence.children"
-             class="card shadow-sm w-25 font-90em bg-light ml-4 mb-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>{{linkedPart.part.type}} {{linkedPart.sequence.identifier}}</div>
-                    <div><a [href]="'/part/' + linkedPart.part.recordId">{{linkedPart.part.partId}}</a></div>
-                    <div class="pull-right">{{linkedPart.sequence.date}}</div>
-                </div>
-
-                <pre> {{linkedPart | json}}</pre>
-                <pre>{{linkedPart.sequence.sequence}}</pre>
-                <div class="mt-2">{{linkedPart.part.shortDescription}}</div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--                <div class="bg-white font-75em"-->
+<!--                     style="height: 180px; overflow: scroll">{{linkedPart.sequence.sequence}}</div>-->
+<!--                <div class="mt-2">{{linkedPart.part.shortDescription}}</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div *ngIf="partSequence.part.hasSequence">
     <div class="border-bottom sub-section pt-4" style="margin-right: 85px">
