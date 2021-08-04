@@ -23,6 +23,6 @@ export class Paging {
         this.processing = false;
         this.sort = 'id';
         this.asc = false;
-        this.pageSize = 15;         // number of items per page
+        this.pageSize = 30;         // number of items per page
     }
 }
