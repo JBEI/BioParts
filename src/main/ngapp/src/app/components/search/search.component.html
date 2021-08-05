@@ -71,7 +71,7 @@
                         </div>
                     </td>
                     <td class="text-nowrap text-capitalize">
-                        <a [href]="result.partner.url" target="_blank">{{result.partner.name}}</a>
+                        <a [href]="getSearchResultUrl(result.partner.url)" target="_blank">{{result.partner.name}}</a>
                     </td>
                     <td>
                         <i *ngIf="result.entryInfo.hasSample" class="fa fa-flask fa-fw"

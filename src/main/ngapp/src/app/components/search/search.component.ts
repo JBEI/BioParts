@@ -107,4 +107,11 @@ export class SearchComponent implements OnInit {
         const pageCount = (currentPage * maxPageCount) > resultCount ? resultCount : (currentPage * maxPageCount);
         return (pageNum) + " - " + (pageCount) + " of " + (resultCount);
     };
+
+    getSearchResultUrl(url: string): string {
+        if (url.startsWith('http'))
+            return url;
+
+        return 'https://' + url;
+    }
 }
