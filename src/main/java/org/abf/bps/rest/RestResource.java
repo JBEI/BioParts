@@ -1,9 +1,8 @@
 package org.abf.bps.rest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Parent class for all rest resource objects.
