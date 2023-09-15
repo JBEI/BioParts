@@ -16,16 +16,17 @@ import org.glassfish.jersey.servlet.ServletContainer;
 public class DevelopmentServer {
     public static void main(String[] args) throws Exception {
         DeploymentInfo servletBuilder = Servlets.deployment()
-            .setClassLoader(ClassLoader.getSystemClassLoader())
+            .setClassLoader(WorsServletContextListener.class.getClassLoader())
             .addListener(Servlets.listener(WorsServletContextListener.class))
             .setContextPath("/")
             .setDeploymentName("Web of Registries Search Platform")
+
 //                .setResourceManager(new FileResourceManager(new File("src/main/webapp"), 10)) //.addWelcomePage("index.htm")
             .addServlets(
                 Servlets.servlet("Jersey REST Servlet", ServletContainer.class)
                     .addInitParam("jersey.config.server.provider.packages", "org.abf.bps.rest")
                     .addInitParam("jersey.config.server.provider.scanning.recursive", "false")
-                    .addInitParam("javax.ws.rs.Application", "org.abf.bps.rest.multipart.WorsApplication")
+                    .addInitParam("jakarta.ws.rs.core.Application", "org.abf.bps.rest.multipart.WorsApplication")
                     .setAsyncSupported(true)
                     .setEnabled(true)
                     .addMapping("/rest/*")

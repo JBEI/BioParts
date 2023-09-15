@@ -1,13 +1,13 @@
 package org.abf.bps.rest;
 
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.abf.bps.lib.annotation.Annotations;
 import org.abf.bps.lib.common.logging.Logger;
 import org.abf.bps.lib.dto.DNAFeature;
 import org.abf.bps.lib.dto.search.BlastQuery;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/annotations")
