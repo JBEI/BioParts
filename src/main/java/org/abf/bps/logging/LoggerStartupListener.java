@@ -50,7 +50,7 @@ public class LoggerStartupListener extends ContextAwareBase implements LoggerCon
 
         // check tmp directory
         propertyHome = System.getProperty("java.io.tmpdir");
-        if (!StringUtils.isEmpty(propertyHome) && !Files.isDirectory(Paths.get(propertyHome)))
+        if (!StringUtils.isEmpty(propertyHome) && Files.isDirectory(Paths.get(propertyHome)))
             return propertyHome;
 
         // just stash it in home
