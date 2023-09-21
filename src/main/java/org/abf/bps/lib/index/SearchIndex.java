@@ -83,7 +83,7 @@ public class SearchIndex {
             if (numTotalHits == 0)
                 return null;
 
-            Document doc = searcher.doc(hits[0].doc);
+            Document doc = searcher.storedFields().document(hits[0].doc);
             return getResultFromDocument(doc);
         } catch (Exception e) {
             Logger.error(e);
@@ -165,7 +165,7 @@ public class SearchIndex {
             if (numTotalHits > 0) {
                 int end = Math.min(start + limit, numTotalHits);
                 for (int i = start; i < end; i += 1) {
-                    Document doc = searcher.doc(hits[i].doc);
+                    Document doc = searcher.storedFields().document(hits[i].doc);
                     SearchResult result = getResultFromDocument(doc);
                     result.setMaxScore(hits[0].score);
                     result.setScore(hits[i].score);
@@ -232,7 +232,7 @@ public class SearchIndex {
     HashMap<String, QueryType> parseQueryString(String queryString) {
         HashMap<String, QueryType> terms = new HashMap<>();
 
-        if (queryString == null || queryString.trim().length() == 0)
+        if (queryString == null || queryString.trim().isEmpty())
             return terms;
 
         StringBuilder builder = new StringBuilder();
@@ -252,7 +252,7 @@ public class SearchIndex {
 
             // check for space
             if (c == ' ') {
-                if (builder.length() == 0)
+                if (builder.isEmpty())
                     continue;
 
                 if (!startedPhrase) {
@@ -264,7 +264,7 @@ public class SearchIndex {
 
             builder.append(c);
         }
-        if (builder.length() > 0) {
+        if (!builder.isEmpty()) {
             if (startedPhrase)
                 terms.put(builder.toString(), QueryType.PHRASE);
             else
