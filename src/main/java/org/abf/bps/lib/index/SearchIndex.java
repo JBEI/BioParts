@@ -67,6 +67,7 @@ public class SearchIndex {
 
     public SearchIndex() throws IOException {
         this.indexPath = Paths.get(Constants.DATA_DIR, LUCENE_INDEX_FOLDER_NAME);
+        Logger.info("Using index path: " + this.indexPath);
         if (!Files.exists(this.indexPath)) {
             Files.createDirectory(this.indexPath);
         }
