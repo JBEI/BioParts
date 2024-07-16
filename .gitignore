@@ -50,3 +50,5 @@ Thumbs.db
 /bps-web.iml
 /src/main/webapp/bps/
 /src/main/ngapp/.angular/
+
+/src/main/ngapp/package-lock.json
