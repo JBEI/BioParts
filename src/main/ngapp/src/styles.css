@@ -1,9 +1,8 @@
-@import "~open-vector-editor/umd/main.css";
-@import '~bootstrap/dist/css/bootstrap.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 @import "assets/css/font-awesome.min.css";
 
 html body {
-    font-family: Arial, sans-serif;
+    font-family: "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
 .entry_detail_submenu .selected {

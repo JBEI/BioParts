@@ -1,5 +1,8 @@
 package org.abf.bps.rest;
 
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.abf.bps.lib.common.logging.Logger;
 import org.abf.bps.lib.dto.FeaturedDNASequence;
 import org.abf.bps.lib.dto.Registry;
@@ -13,10 +16,6 @@ import org.abf.bps.lib.part.AddGeneParts;
 import org.abf.bps.lib.part.IgemParts;
 import org.abf.bps.lib.part.Parts;
 import org.abf.bps.lib.search.blast.Constants;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * REST resource for searching. Supports keyword search with query params for filtering and advanced search
