@@ -15,35 +15,35 @@
         <div class="row">
             <table class="table table-hover"
                    [ngClass]="{'opacity-4':loadingSearchResults, 'border-bottom': searchResults && searchResults.resultCount}">
-                <thead class="bg-light text-black-50">
+                <thead class="text-black-50">
                 <tr>
-                    <th (click)="sortResults('type')" class="cursor-pointer">
+                    <th (click)="sortResults('type')" class="bg-light p-3 cursor-pointer">
                         <span>TYPE</span>&nbsp;
                         <i *ngIf="query.parameters.sortField!=='TYPE'" class="sortable fa fa-angle-down"></i>
                         <i *ngIf="query.parameters.sortField=='TYPE'"
                            class="fa opacity-4"
                            [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
                     </th>
-                    <th (click)="sortResults('part_id')" class="cursor-pointer">
+                    <th (click)="sortResults('part_id')" class="bg-light p-3 cursor-pointer">
                         <span>PART ID</span>&nbsp;
                         <i *ngIf="query.parameters.sortField!=='PART_ID'" class="sortable fa fa-angle-down"></i>
                         <i *ngIf="query.parameters.sortField=='PART_ID'"
                            class="fa opacity-4"
                            [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
                     </th>
-                    <th (click)="sortResults('NAME')" class="cursor-pointer text-uppercase">
+                    <th (click)="sortResults('NAME')" class="bg-light p-3 cursor-pointer text-uppercase">
                         <span>NAME</span>&nbsp;
                         <i *ngIf="query.parameters.sortField!=='NAME'" class="sortable fa fa-angle-down"></i>
                         <i *ngIf="query.parameters.sortField=='NAME'"
                            class="fa opacity-4"
                            [ngClass]="{'fa-angle-down':query.parameters.sortAscending==false, 'fa-angle-up':query.parameters.sortAscending==true}"></i>
                     </th>
-                    <th style=" width:230px"><span>SOURCE</span></th>
-                    <th style="width:100px;">
+                    <th style=" width:230px" class="bg-light p-3"><span>SOURCE</span></th>
+                    <th style="width:100px;" class="bg-light p-3">
                         <i class="fa fa-flask fa-fw"></i>
                         <img src="assets/img/dna.svg" style="opacity: 0.5%" width="15px" alt="has dna"/>
                     </th>
-                    <th (click)="sortResults('created')" class="cursor-pointer" style="width: 120px">
+                    <th (click)="sortResults('created')" class="bg-light p-3 cursor-pointer" style="width: 120px">
                         <span>CREATED</span>&nbsp;
                         <i *ngIf="query.parameters.sortField==='CREATED'"
                            class="fa opacity-4"
@@ -80,7 +80,10 @@
                            style="opacity: 0; font-size: 14px;"></i>
                         <img *ngIf="result.entryInfo.hasSequence" alt="" src="assets/img/dna.svg" width="15px"/>
                     </td>
-                    <td style="white-space:nowrap">{{result.entryInfo.creationTime | date:'MMM d, yyyy'}}</td>
+                    <td style="white-space:nowrap">
+                        <span
+                            *ngIf="result.entryInfo.creationTime">{{ result.entryInfo.creationTime | date:'MMM d, yyyy' }}</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
