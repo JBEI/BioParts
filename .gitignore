@@ -48,3 +48,5 @@ Thumbs.db
 /target/
 /src/main/ngapp/dist/
 /bps-web.iml
+/src/main/ngapp/.angular
+/src/main/webapp/bps
