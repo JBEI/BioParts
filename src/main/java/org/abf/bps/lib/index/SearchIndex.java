@@ -153,6 +153,12 @@ public class SearchIndex {
                 builder.add(new TermQuery(new Term(IndexField.HAS_SEQUENCE.toString(), "true")), BooleanClause.Occur.MUST);
             }
 
+            // retrieve via source
+            if (query.getSourceFilters() != null && !query.getSourceFilters().isEmpty()) {
+                // todo : use "or" for entire list
+                builder.add(new TermQuery(new Term(IndexField.SOURCE_URL.toString(), query.getSourceFilters().get(0))), BooleanClause.Occur.SHOULD);
+            }
+
             IndexReader reader = DirectoryReader.open(FSDirectory.open(this.indexPath));
             IndexSearcher searcher = new IndexSearcher(reader);
 

@@ -5,6 +5,7 @@ import org.abf.bps.lib.dto.entry.EntryType;
 import org.abf.bps.lib.shared.BioSafetyOption;
 import org.abf.bps.lib.shared.ColumnField;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  */
 public class SearchQuery implements IDataTransferModel {
 
-    public static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String queryString;
     private BlastQuery blastQuery;
@@ -22,6 +24,7 @@ public class SearchQuery implements IDataTransferModel {
     private ArrayList<EntryType> entryTypes;
     private Parameters parameters;
     private ArrayList<FieldFilter> fieldFilters;
+    private ArrayList<String> sourceFilters;    // source of the data
 
     /**
      * set the query default values
@@ -69,6 +72,14 @@ public class SearchQuery implements IDataTransferModel {
 
     public void setFieldFilters(ArrayList<FieldFilter> fieldFilters) {
         this.fieldFilters = fieldFilters;
+    }
+
+    public ArrayList<String> getSourceFilters() {
+        return sourceFilters;
+    }
+
+    public void setSourceFilters(ArrayList<String> sourceFilters) {
+        this.sourceFilters = sourceFilters;
     }
 
     public void setEntryTypes(List<EntryType> entryTypes) {
